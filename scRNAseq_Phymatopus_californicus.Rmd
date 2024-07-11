@@ -21,15 +21,15 @@ setwd("/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus")
 
 ## Drop-seq protocol
 
-We generated the digital expression matrix using the Drop-seq protocol developed by the McCarroll Lab (https://github.com/broadinstitute/Drop-seq). Here are the list of outputs:
+We generated the digital expression matrix using the Drop-seq protocol developed by the McCarroll Lab (https://github.com/broadinstitute/Drop-seq). Here are the programs used:
 
-```{bash, engine.opts='-l', echo=FALSE}
-ls -lht /media/nguyen/Data1/mao/scseq/dropseq/pc27mito
+```{bash, engine.opts='-l', echo=FALSE, comment=""}
+cat /media/nguyen/Data1/mao/scseq/dropseq/pc27mito/sh_dropseq_pc27mito.sh
 ```
 
 ## Knee-plot analysis
 
-The y axis indicates the "Cumulative fraction of uniquely mapped reads."
+The y axis indicates the "cumulative fraction of uniquely mapped reads."
 
 ```{r knee-plot}
 pc27=read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/cell_readcounts.txt.gz", header=F, stringsAsFactors=F)
@@ -52,13 +52,47 @@ ggplot(df_pc27, aes(xvalue, yvalue)) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-## UMAP
+## DropletUtils analysis
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+[Nikos Konstantinides](https://konstantinides-lab.com) suggested using [DropletUtils](https://doi.org/doi:10.18129/B9.bioc.DropletUtils) to identify the knee and inflection points. The y axis indicates the "total UMI count for each barcode."
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r DropletUtils}
+for_row_names <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F)$GENE
+m_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F, row.names = for_row_names)[,-1]
+br.out <- barcodeRanks(m_pc27)
+o <- order(br.out$rank)
+# metadata(br.out)$knee: 273
+# metadata(br.out)$inflection : 114
+which(br.out$total==273)[1]
+min_rank <- br.out$rank[3905] # 7321
+which(br.out$total==114)[1]
+max_rank <- br.out$rank[7873] # 9401
+ggplot()+
+  geom_point(aes(x=br.out$rank, y=br.out$total+1), size=0.5, alpha=0.5)+
+  geom_line(aes(x=br.out$rank[o],y=br.out$fitted[o]), color="magenta")+
+  geom_hline(aes(yintercept=metadata(br.out)$knee), color="dodgerblue", linetype=2)+
+  geom_hline(aes(yintercept=metadata(br.out)$inflection), color="brown", linetype=2)+
+  geom_vline(aes(xintercept=min_rank), color="orange", linetype=3)+
+  geom_vline(aes(xintercept=max_rank), color="orange", linetype=3)+
+  scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')+
+  labs(title=expression(italic(P.)~italic(californicus)~"testis (PC_27)"),
+       x="Cell barcodes sorted by number of counts [descending]",
+       y="Total UMI count for each barcode") +
+  theme_bw() +
+  theme(axis.line = element_blank(),
+        axis.title = element_text(color="black"),
+        axis.text = element_text(color="black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
+```
 
-```{r umap, eval=TRUE}
+## UMAP plot
+
+We used [Seurat](https://satijalab.org/seurat) to generate the UMAP plot.
+
+```{r umap-plot}
 mtx_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header = TRUE, row.names = 1, colClasses =c("character", rep("numeric", 10000)))
 so_pc27 <- CreateSeuratObject(counts = mtx_pc27, min.cells = 3, min.features = 200, project = "pc27") %>%
            PercentageFeatureSet(pattern = "^agat|^rrn", col.name = "percent.mt") %>%
@@ -92,12 +126,8 @@ ggplot(df_umap) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-## Including Plots
+## Session info
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r sessioninfo, echo=FALSE}
+sessionInfo()
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
