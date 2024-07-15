@@ -29,13 +29,12 @@ The _P. californicus_ genome was sequenced in [Petr Nguyen's lab](https://www.en
 The scRNA-seq library was prepared with the RNAdia 2.0 kit (Dolomite Bio), following the manufacturer's instructions. Approximately 8,000 cells were captured, and the size distribution of the library was examined using the Bioanalyzer system.
 
 ```{r pressure, echo=FALSE, fig.cap="Size distribution assessed by Bioanalyzer", out.width = '60%', fig.align = 'center'}
-#![Bioanalyzer electropherogram of sequencing library!]("/home/nguyen/Downloads/Bioanalyzer_trace_PC-27.png")
-knitr::include_graphics("/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/bioanalyzer_pc27.png")
+knitr::include_graphics("./data/bioanalyzer_pc27.png")
 ```
 
 ## Quality control checks on raw reads
 
-[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was used for quality check. Output can be found [here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read1_pre.html) and [here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read2_pre.html).
+[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was used for quality check. Output can be found [here](./data/fastqc_pc27_read1_pre.html) and [here](./data/fastqc_pc27_read2_pre.html).
 
 ## Drop-seq protocol
 

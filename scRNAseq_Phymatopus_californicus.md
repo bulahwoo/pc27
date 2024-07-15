@@ -30,7 +30,7 @@ examined using the Bioanalyzer system.
 
 <div class="figure" style="text-align: center">
 
-<img src="data/bioanalyzer_pc27.png" alt="Size distribution assessed by Bioanalyzer" width="60%" />
+<img src="./data/bioanalyzer_pc27.png" alt="Size distribution assessed by Bioanalyzer" width="60%" />
 <p class="caption">
 Size distribution assessed by Bioanalyzer
 </p>
@@ -41,9 +41,8 @@ Size distribution assessed by Bioanalyzer
 
 [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was
 used for quality check. Output can be found
-[here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read1_pre.html)
-and
-[here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read2_pre.html).
+[here](./data/fastqc_pc27_read1_pre.html) and
+[here](./data/fastqc_pc27_read2_pre.html).
 
 ## Drop-seq protocol
 
