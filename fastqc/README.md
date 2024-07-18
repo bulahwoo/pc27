@@ -16,7 +16,6 @@
 
 ![Per base sequence quality](Images/per_base_quality.png)
 
-
 ## Per tile sequence quality
 
 ![Per tile sequence quality](Images/per_tile_quality.png)
