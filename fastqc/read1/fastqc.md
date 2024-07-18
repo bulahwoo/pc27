@@ -15,7 +15,6 @@
 ## :warning: __Per base sequence quality__
 
 ![Per base sequence quality](Images/per_base_quality.png)
-<img src="Images/per_base_quality.png" width="225"/><img src="Images/per_base_quality.png" width="225"/>
 
 ## :x: __Per tile sequence quality__
 
