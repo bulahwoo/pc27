@@ -30,7 +30,7 @@ examined using the Bioanalyzer system.
 
 <div class="figure" style="text-align: center">
 
-<img src="./data/bioanalyzer_pc27.png" alt="Size distribution assessed by Bioanalyzer" width="60%" />
+<img src="data/bioanalyzer_pc27.png" alt="Size distribution assessed by Bioanalyzer" width="60%" />
 <p class="caption">
 Size distribution assessed by Bioanalyzer
 </p>
@@ -41,14 +41,21 @@ Size distribution assessed by Bioanalyzer
 
 [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was
 used for quality check. Output can be found
-[here](./data/fastqc_pc27_read1_pre.html) and
-[here](./data/fastqc_pc27_read2_pre.html).
+[here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read1_pre.html)
+and
+[here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read2_pre.html).
 
 ## Drop-seq protocol
 
-The digital expression matrix using the Drop-seq protocol developed by
-the McCarroll Lab (<https://github.com/broadinstitute/Drop-seq>). Here
-are the programs used:
+The digital expression matrix using the Drop-seq core computational
+protocol developed by the McCarroll Lab
+(<https://github.com/broadinstitute/Drop-seq>). Briefly, cell barcodes
+(CBs) and unique molecular identifiers (UMIs) were identified from raw
+reads. Reads with CBs/UMIs of low quality bases were removed, and 5’
+primer and 3’ polyA sequences were trimmed. The reads were then aligned
+to the reference genome using STAR aligner. Substitution and indel
+errors in barcodes were repaired before the digital expression matrix
+was created. Here are the programs utilized:
 
     #!/bin/bash
     #PBS -N pc27mito
@@ -142,7 +149,12 @@ are the programs used:
 
 ## Knee-plot analysis
 
-The y axis indicates the “cumulative fraction of uniquely mapped reads.”
+In the dot plot, the x-axis represents the cell barcodes (organized by
+the number of reads, arranged from highest to lowest), and the y-axis
+shows the cumulative fraction of uniquely mapped reads. The transition
+from beads sampling cellular RNA to beads sampling ambient RNA is marked
+by the inflection point ([Macosko et al.,
+2015](http://dx.doi.org/10.1016/j.cell.2015.05.002)).
 
 ``` r
 pc27=read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/cell_readcounts.txt.gz", header=F, stringsAsFactors=F)
@@ -150,11 +162,10 @@ csum_pc27=cumsum(pc27$V1)
 df_pc27 <- cbind.data.frame(xvalue=1:length(csum_pc27), yvalue=csum_pc27/max(csum_pc27))
 ggplot(df_pc27, aes(xvalue, yvalue)) +
   geom_point(size=0.1, color="cornflowerblue") + scale_x_continuous(limits = c(0,50000))+
-  #geom_hline(aes(yintercept=df_pc27 %>% filter(xvalue==10000) %>% pull(yvalue)), color="brown", linetype=2)+
   geom_hline(aes(yintercept=df_pc27 %>% filter(xvalue==8000) %>% pull(yvalue)), color="brown", linetype=2)+
-  #geom_vline(aes(xintercept=10000), color="orange", linetype=3)+
   geom_vline(aes(xintercept=8000), color="orange", linetype=3)+
-  labs(title=expression(italic(P.)~italic(californicus)~"testis (PC_27)"), x="Cell barcodes sorted by number of reads [descending]", y="Cumulative fraction of reads") +
+  annotate("text", x=15000, y=0.25, label="(8000, 0.2998)")+ # 0.2998019
+  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"), x="Cell barcodes sorted by number of reads [descending]", y="Cumulative fraction of reads") +
   theme_bw() +
   theme(axis.line = element_blank(),
         axis.title = element_text(color="black"),
@@ -169,8 +180,9 @@ ggplot(df_pc27, aes(xvalue, yvalue)) +
 
 [Nikos Konstantinides](https://konstantinides-lab.com) suggested using
 [DropletUtils](https://doi.org/doi:10.18129/B9.bioc.DropletUtils) to
-identify the knee and inflection points. The y axis indicates the “total
-UMI count for each barcode.”
+identify the knee and inflection points. Here the x-axis indicates the
+cell barcodes (organized by the number of reads, arranged from highest
+to lowest) and the y-axis the total UMI count for each barcode.
 
 ``` r
 for_row_names <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F)$GENE
@@ -178,26 +190,64 @@ m_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.tx
 br.out <- barcodeRanks(m_pc27)
 o <- order(br.out$rank)
 # metadata(br.out)$knee: 273
-# metadata(br.out)$inflection : 114
-which(br.out$total==273)[1]
+# which(br.out$total==273)[1]
 min_rank <- br.out$rank[3905] # 7321
-which(br.out$total==114)[1]
+# metadata(br.out)$inflection : 114
+# which(br.out$total==114)[1]
 max_rank <- br.out$rank[7873] # 9401
 ggplot()+
-  geom_point(aes(x=br.out$rank, y=br.out$total+1), size=0.5, alpha=0.5)+
+  geom_point(aes(x=br.out$rank, y=br.out$total+1), color="grey50", size=0.5, alpha=0.5)+
   geom_line(aes(x=br.out$rank[o],y=br.out$fitted[o]), color="magenta")+
   geom_hline(aes(yintercept=metadata(br.out)$knee), color="dodgerblue", linetype=2)+
   geom_hline(aes(yintercept=metadata(br.out)$inflection), color="brown", linetype=2)+
   geom_vline(aes(xintercept=min_rank), color="orange", linetype=3)+
   geom_vline(aes(xintercept=max_rank), color="orange", linetype=3)+
-  scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')+
-  labs(title=expression(italic(P.)~italic(californicus)~"testis (PC_27)"),
+  annotate("text", x=2000, y=500, label="(7321, 273)")+
+  annotate("text", x=20000, y=70, label="(9401, 114)")+
+  scale_x_continuous(limits=c(1,50000), trans='log10', breaks = c(1,10,100,1000,10000,10000),labels = scales::number)+
+  scale_y_continuous(limits=c(1,50000), trans='log10', breaks = c(1,10,100,1000,10000,10000),labels = scales::number)+
+  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"),
        x="Cell barcodes sorted by number of counts [descending]",
        y="Total UMI count for each barcode") +
   theme_bw() +
   theme(axis.line = element_blank(),
         axis.title = element_text(color="black"),
         axis.text = element_text(color="black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
+```
+
+|       | FALSE | TRUE |
+|:------|------:|-----:|
+| FALSE |  2038 | 7016 |
+| TRUE  |     0 |  348 |
+
+``` r
+for_row_names <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F)$GENE
+m_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F, row.names = for_row_names)[,-1]
+set.seed(100)
+e.out <- emptyDrops(m_pc27, niters=10000)
+is.cell <- e.out$FDR <= 0.001
+sum(is.cell, na.rm=TRUE)
+knitr::kable(table(Limited=e.out$Limited, Significant=is.cell))
+```
+
+``` r
+ggplot(e.out %>% as.data.frame() %>% filter(!is.na(LogProb)) %>% mutate(FDR_fill=ifelse(FDR>0.001, "cornflowerblue", "orange")))+
+  geom_point(aes(x=Total, y=-LogProb, color=FDR_fill), size=1, alpha=0.5)+
+  scale_color_manual(values=c("cornflowerblue", "orange"), labels=c('FDR > 0.001', 'FDR <= 0.001'))+
+  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"),
+       x="Total UMI count",
+       y="-Log Probability") +
+  theme_bw() +
+  theme(axis.line = element_blank(),
+        axis.title = element_text(color="black"),
+        axis.text = element_text(color="black"),
+        legend.title = element_blank(),
+        legend.position = "inside",
+        legend.position.inside = c(0.8, 0.2),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_blank(),
@@ -224,7 +274,7 @@ ggplot(df_umap) +
   geom_point(aes(x=umap_1, y=umap_2, color=color), size=0.8) +
   geom_text_repel(data=df_umap %>% group_by(color) %>% summarise(q1=quantile(umap_1, 0.5), q2=quantile(umap_2, 0.5)),
                   aes(x=q1, y=q2, label = LETTERS[1:11]), size=8) +
-  labs(title=expression(italic(P.)~italic(californicus)~"testis (PC_27)"),
+  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"),
        x="UMAP_1",
        y="UMAP_2") +
   #scale_color_brewer(palette = "Set2", name="clusters", labels=LETTERS[1:11]) +
