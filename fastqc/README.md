@@ -1,6 +1,6 @@
 # __FastQC Report__
 
-## __Basic Statistics__
+## :white_check_mark: __Basic Statistics__
 
 | Measure | Value |
 | --- | --- |
