@@ -20,41 +20,33 @@
 
 ![Per tile sequence quality](Images/per_tile_quality.png)
 
-
-## Per sequence quality scores
+## :white_check_mark: __Per sequence quality scores__
 
 ![Per sequence quality scores](Images/per_sequence_quality.png)
-
 
 ## Per base sequence content
 
 ![Per base sequence content](Images/per_base_sequence_content.png)
 
-
 ## Per sequence GC content
 
 ![Per sequence GC content](Images/per_sequence_gc_content.png)
 
-
-## Per base N content
+## :white_check_mark: __Per base N content__
 
 ![Per base N content](Images/per_base_n_content.png)
 
-
-## Sequence Length Distribution
+## :white_check_mark: __Sequence Length Distribution__
 
 ![Sequence Length Distribution](Images/sequence_length_distribution.png)
-
 
 ## Sequence Duplication Levels
 
 ![Sequence Duplication Levels](Images/duplication_levels.png)
 
-
-## Overrepresented sequences
+## :white_check_mark: __Overrepresented sequences__
 
 No overrepresented sequences
-
 
 ## Adapter Content
 
