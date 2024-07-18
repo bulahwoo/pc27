@@ -1,7 +1,7 @@
-Single-cell RNA sequencing of *Phymatopus californicus* samples
+Single-cell RNA sequencing of *Phymatopus californicus* sample PC27
 ================
-Bulah Wu
-July 15, 2024
+Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
+July 18, 2024
 
 ## Genome assembly and annotation
 
@@ -41,9 +41,7 @@ Size distribution assessed by Bioanalyzer
 
 [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was
 used for quality check. Output can be found
-[here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read1_pre.html)
-and
-[here](/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/fastqc_pc27_read2_pre.html).
+[here](fastqc/read1/fastqc.md) and [here](fastqc/read2/fastqc.md).
 
 ## Drop-seq protocol
 
@@ -165,7 +163,7 @@ ggplot(df_pc27, aes(xvalue, yvalue)) +
   geom_hline(aes(yintercept=df_pc27 %>% filter(xvalue==8000) %>% pull(yvalue)), color="brown", linetype=2)+
   geom_vline(aes(xintercept=8000), color="orange", linetype=3)+
   annotate("text", x=15000, y=0.25, label="(8000, 0.2998)")+ # 0.2998019
-  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"), x="Cell barcodes sorted by number of reads [descending]", y="Cumulative fraction of reads") +
+  labs(title=expression(italic(P.)~italic(californicus)~"PC27"), x="Cell barcodes sorted by number of reads [descending]", y="Cumulative fraction of reads") +
   theme_bw() +
   theme(axis.line = element_blank(),
         axis.title = element_text(color="black"),
@@ -176,6 +174,8 @@ ggplot(df_pc27, aes(xvalue, yvalue)) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
+![](scRNAseq_Phymatopus_californicus_files/figure-gfm/knee-plot-1.png)<!-- -->
+
 ## DropletUtils analysis
 
 [Nikos Konstantinides](https://konstantinides-lab.com) suggested using
@@ -185,16 +185,15 @@ cell barcodes (organized by the number of reads, arranged from highest
 to lowest) and the y-axis the total UMI count for each barcode.
 
 ``` r
-for_row_names <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F)$GENE
-m_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F, row.names = for_row_names)[,-1]
-br.out <- barcodeRanks(m_pc27)
+mtx_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c8k.txt.gz", header = TRUE, row.names = 1, colClasses =c("character", rep("numeric", 8000)))
+br.out <- barcodeRanks(mtx_pc27)
 o <- order(br.out$rank)
-# metadata(br.out)$knee: 273
-# which(br.out$total==273)[1]
-min_rank <- br.out$rank[3905] # 7321
-# metadata(br.out)$inflection : 114
-# which(br.out$total==114)[1]
-max_rank <- br.out$rank[7873] # 9401
+# metadata(br.out)$knee: 298
+# metadata(br.out)$inflection : 134
+# which(br.out$total==298)[1]
+min_rank <- br.out$rank[which(br.out$total==298)[1]] # 5916.5
+# which(br.out$total==134)[1]
+max_rank <- br.out$rank[which(br.out$total==134)[1]] # 7494
 ggplot()+
   geom_point(aes(x=br.out$rank, y=br.out$total+1), color="grey50", size=0.5, alpha=0.5)+
   geom_line(aes(x=br.out$rank[o],y=br.out$fitted[o]), color="magenta")+
@@ -202,11 +201,11 @@ ggplot()+
   geom_hline(aes(yintercept=metadata(br.out)$inflection), color="brown", linetype=2)+
   geom_vline(aes(xintercept=min_rank), color="orange", linetype=3)+
   geom_vline(aes(xintercept=max_rank), color="orange", linetype=3)+
-  annotate("text", x=2000, y=500, label="(7321, 273)")+
-  annotate("text", x=20000, y=70, label="(9401, 114)")+
+  annotate("text", x=2000, y=500, label="(5916.5, 298)")+
+  annotate("text", x=20000, y=70, label="(7494, 134)")+
   scale_x_continuous(limits=c(1,50000), trans='log10', breaks = c(1,10,100,1000,10000,10000),labels = scales::number)+
   scale_y_continuous(limits=c(1,50000), trans='log10', breaks = c(1,10,100,1000,10000,10000),labels = scales::number)+
-  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"),
+  labs(title=expression(italic(P.)~italic(californicus)~"PC27"),
        x="Cell barcodes sorted by number of counts [descending]",
        y="Total UMI count for each barcode") +
   theme_bw() +
@@ -219,66 +218,72 @@ ggplot()+
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-|       | FALSE | TRUE |
-|:------|------:|-----:|
-| FALSE |  2038 | 7016 |
-| TRUE  |     0 |  348 |
+![](scRNAseq_Phymatopus_californicus_files/figure-gfm/barcodeRanks-1.png)<!-- -->
+
+Subset the SingleCellExperiment object to discard the empty droplets.
 
 ``` r
-for_row_names <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F)$GENE
-m_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header=T, stringsAsFactors=F, row.names = for_row_names)[,-1]
+#mtx_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c8k.txt.gz", header = TRUE, row.names = 1, colClasses =c("character", rep("numeric", 8000)))
 set.seed(100)
-e.out <- emptyDrops(m_pc27, niters=10000)
+e.out <- emptyDrops(mtx_pc27, niters=10000)
 is.cell <- e.out$FDR <= 0.001
 sum(is.cell, na.rm=TRUE)
-knitr::kable(table(Limited=e.out$Limited, Significant=is.cell))
 ```
 
+    ## [1] 5919
+
 ``` r
-ggplot(e.out %>% as.data.frame() %>% filter(!is.na(LogProb)) %>% mutate(FDR_fill=ifelse(FDR>0.001, "cornflowerblue", "orange")))+
-  geom_point(aes(x=Total, y=-LogProb, color=FDR_fill), size=1, alpha=0.5)+
-  scale_color_manual(values=c("cornflowerblue", "orange"), labels=c('FDR > 0.001', 'FDR <= 0.001'))+
-  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"),
-       x="Total UMI count",
-       y="-Log Probability") +
-  theme_bw() +
-  theme(axis.line = element_blank(),
-        axis.title = element_text(color="black"),
-        axis.text = element_text(color="black"),
-        legend.title = element_blank(),
-        legend.position = "inside",
-        legend.position.inside = c(0.8, 0.2),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
+table(Limited=e.out$Limited, Significant=is.cell)
+```
+
+    ##        Significant
+    ## Limited FALSE TRUE
+    ##   FALSE  1576 5430
+    ##   TRUE      0  489
+
+``` r
+mtx_pc27 <- mtx_pc27[,which(e.out$FDR<=0.001)]
 ```
 
 ## UMAP plot
 
-We used [Seurat](https://satijalab.org/seurat) to generate the UMAP
+[Seurat](https://satijalab.org/seurat) was used to generate the UMAP
 plot.
 
 ``` r
-mtx_pc27 <- read.table("/media/nguyen/Data1/mao/scseq/dropseq/pc27mito/dge_c10k.txt.gz", header = TRUE, row.names = 1, colClasses =c("character", rep("numeric", 10000)))
 so_pc27 <- CreateSeuratObject(counts = mtx_pc27, min.cells = 3, min.features = 200, project = "pc27") %>%
            PercentageFeatureSet(pattern = "^agat|^rrn", col.name = "percent.mt") %>%
+           subset(subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5) %>%
            SCTransform(vars.to.regress = "percent.mt") %>%
            RunPCA() %>%
            FindNeighbors(dims = 1:30) %>%
            RunUMAP(dims = 1:30) %>%
            FindClusters()
+```
+
+    ## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+    ## 
+    ## Number of nodes: 5903
+    ## Number of edges: 163017
+    ## 
+    ## Running Louvain algorithm...
+    ## Maximum modularity in 10 random starts: 0.7222
+    ## Number of communities: 12
+    ## Elapsed time: 0 seconds
+
+``` r
 df_umap <- so_pc27@reductions$umap@cell.embeddings %>% as.data.frame() %>% cbind(color=so_pc27@meta.data$seurat_clusters)
-my_color <- c(brewer.pal(name="Set2", n=8),brewer.pal(name="Dark2", n=8))[c(1,3,2,4,5:8,12,14,15)]
+#length(unique(df_umap$color))
+my_color <- c(brewer.pal(name="Set2", n=8),brewer.pal(name="Dark2", n=8))[c(1,3,2,4,5,6,7,8,12,14,15,16)]
+#my_color <- c(brewer.pal(name="Set2", n=8),brewer.pal(name="Dark2", n=8))[c(1,3,2,5,4,6,7,16,12,14,15,8,11)]
 ggplot(df_umap) +
   geom_point(aes(x=umap_1, y=umap_2, color=color), size=0.8) +
   geom_text_repel(data=df_umap %>% group_by(color) %>% summarise(q1=quantile(umap_1, 0.5), q2=quantile(umap_2, 0.5)),
-                  aes(x=q1, y=q2, label = LETTERS[1:11]), size=8) +
-  labs(title=expression(italic(P.)~italic(californicus)~"PC_27"),
+                  aes(x=q1, y=q2, label = LETTERS[1:12]), size=8) +
+  labs(title=expression(italic(P.)~italic(californicus)~"PC27"),
        x="UMAP_1",
        y="UMAP_2") +
-  #scale_color_brewer(palette = "Set2", name="clusters", labels=LETTERS[1:11]) +
-  scale_color_manual(values = my_color, name="clusters", labels=LETTERS[1:11]) +
+  scale_color_manual(values = my_color, name="clusters", labels=LETTERS[1:12]) +
   guides(color = guide_legend(override.aes = list(size = 5))) +
   theme_bw() +
   theme(axis.line = element_blank(),
@@ -292,6 +297,8 @@ ggplot(df_umap) +
         panel.background = element_blank(),
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
+
+![](scRNAseq_Phymatopus_californicus_files/figure-gfm/umap-plot-1.png)<!-- -->
 
 ## Session info
 
@@ -331,67 +338,69 @@ ggplot(df_umap) +
     ## [21] ggplot2_3.5.1              
     ## 
     ## loaded via a namespace (and not attached):
-    ##   [1] jsonlite_1.8.8            magrittr_2.0.3           
-    ##   [3] spatstat.utils_3.0-5      zlibbioc_1.48.2          
-    ##   [5] vctrs_0.6.5               ROCR_1.0-11              
-    ##   [7] DelayedMatrixStats_1.24.0 spatstat.explore_3.2-7   
-    ##   [9] RCurl_1.98-1.14           S4Arrays_1.2.1           
-    ##  [11] htmltools_0.5.8.1         Rhdf5lib_1.24.2          
-    ##  [13] rhdf5_2.46.1              SparseArray_1.2.4        
-    ##  [15] sctransform_0.4.1         parallelly_1.37.1        
-    ##  [17] KernSmooth_2.23-24        htmlwidgets_1.6.4        
-    ##  [19] ica_1.0-3                 plyr_1.8.9               
-    ##  [21] plotly_4.10.4             zoo_1.8-12               
-    ##  [23] igraph_2.0.3              mime_0.12                
-    ##  [25] lifecycle_1.0.4           pkgconfig_2.0.3          
-    ##  [27] Matrix_1.6-5              R6_2.5.1                 
-    ##  [29] fastmap_1.2.0             GenomeInfoDbData_1.2.11  
-    ##  [31] fitdistrplus_1.1-11       future_1.33.2            
-    ##  [33] shiny_1.8.1.1             digest_0.6.36            
-    ##  [35] colorspace_2.1-0          tensor_1.5               
-    ##  [37] dqrng_0.4.1               RSpectra_0.16-1          
-    ##  [39] irlba_2.3.5.1             beachmat_2.18.1          
-    ##  [41] progressr_0.14.0          fansi_1.0.6              
-    ##  [43] spatstat.sparse_3.1-0     httr_1.4.7               
-    ##  [45] polyclip_1.10-6           abind_1.4-5              
-    ##  [47] compiler_4.3.3            withr_3.0.0              
-    ##  [49] BiocParallel_1.36.0       fastDummies_1.7.3        
-    ##  [51] highr_0.11                R.utils_2.12.3           
-    ##  [53] HDF5Array_1.30.1          MASS_7.3-60              
-    ##  [55] DelayedArray_0.28.0       tools_4.3.3              
-    ##  [57] lmtest_0.9-40             httpuv_1.6.15            
-    ##  [59] future.apply_1.11.2       goftest_1.2-3            
-    ##  [61] R.oo_1.26.0               glue_1.7.0               
-    ##  [63] rhdf5filters_1.14.1       nlme_3.1-165             
-    ##  [65] promises_1.3.0            grid_4.3.3               
-    ##  [67] Rtsne_0.17                cluster_2.1.6            
-    ##  [69] reshape2_1.4.4            generics_0.1.3           
-    ##  [71] gtable_0.3.5              spatstat.data_3.1-2      
-    ##  [73] R.methodsS3_1.8.2         data.table_1.15.4        
-    ##  [75] utf8_1.2.4                XVector_0.42.0           
-    ##  [77] spatstat.geom_3.2-9       RcppAnnoy_0.0.22         
-    ##  [79] RANN_2.6.1                pillar_1.9.0             
-    ##  [81] stringr_1.5.1             limma_3.58.1             
-    ##  [83] spam_2.10-0               RcppHNSW_0.6.0           
-    ##  [85] later_1.3.2               splines_4.3.3            
-    ##  [87] lattice_0.22-6            survival_3.7-0           
-    ##  [89] deldir_2.0-4              tidyselect_1.2.1         
-    ##  [91] locfit_1.5-9.10           scuttle_1.12.0           
-    ##  [93] miniUI_0.1.1.1            pbapply_1.7-2            
-    ##  [95] knitr_1.48                gridExtra_2.3            
-    ##  [97] edgeR_4.0.16              scattermore_1.2          
-    ##  [99] xfun_0.45                 statmod_1.5.0            
-    ## [101] stringi_1.8.4             lazyeval_0.2.2           
-    ## [103] yaml_2.3.9                evaluate_0.24.0          
-    ## [105] codetools_0.2-20          tibble_3.2.1             
-    ## [107] cli_3.6.3                 uwot_0.2.2               
-    ## [109] xtable_1.8-4              reticulate_1.38.0        
-    ## [111] munsell_0.5.1             Rcpp_1.0.12              
-    ## [113] globals_0.16.3            spatstat.random_3.2-3    
-    ## [115] png_0.1-8                 parallel_4.3.3           
-    ## [117] dotCall64_1.1-1           sparseMatrixStats_1.14.0 
-    ## [119] bitops_1.0-7              listenv_0.9.1            
-    ## [121] viridisLite_0.4.2         scales_1.3.0             
-    ## [123] ggridges_0.5.6            crayon_1.5.3             
-    ## [125] leiden_0.4.3.1            purrr_1.0.2              
-    ## [127] rlang_1.1.4               cowplot_1.1.3
+    ##   [1] RcppAnnoy_0.0.22          splines_4.3.3            
+    ##   [3] later_1.3.2               bitops_1.0-7             
+    ##   [5] tibble_3.2.1              R.oo_1.26.0              
+    ##   [7] polyclip_1.10-6           fastDummies_1.7.3        
+    ##   [9] lifecycle_1.0.4           edgeR_4.0.16             
+    ##  [11] globals_0.16.3            lattice_0.22-6           
+    ##  [13] MASS_7.3-60               magrittr_2.0.3           
+    ##  [15] limma_3.58.1              plotly_4.10.4            
+    ##  [17] yaml_2.3.9                httpuv_1.6.15            
+    ##  [19] glmGamPoi_1.14.3          sctransform_0.4.1        
+    ##  [21] spam_2.10-0               spatstat.sparse_3.1-0    
+    ##  [23] reticulate_1.38.0         cowplot_1.1.3            
+    ##  [25] pbapply_1.7-2             abind_1.4-5              
+    ##  [27] zlibbioc_1.48.2           Rtsne_0.17               
+    ##  [29] purrr_1.0.2               R.utils_2.12.3           
+    ##  [31] RCurl_1.98-1.14           GenomeInfoDbData_1.2.11  
+    ##  [33] irlba_2.3.5.1             listenv_0.9.1            
+    ##  [35] spatstat.utils_3.0-5      goftest_1.2-3            
+    ##  [37] RSpectra_0.16-1           spatstat.random_3.2-3    
+    ##  [39] dqrng_0.4.1               fitdistrplus_1.1-11      
+    ##  [41] parallelly_1.37.1         DelayedMatrixStats_1.24.0
+    ##  [43] leiden_0.4.3.1            codetools_0.2-20         
+    ##  [45] DelayedArray_0.28.0       scuttle_1.12.0           
+    ##  [47] tidyselect_1.2.1          farver_2.1.2             
+    ##  [49] spatstat.explore_3.2-7    jsonlite_1.8.8           
+    ##  [51] progressr_0.14.0          ggridges_0.5.6           
+    ##  [53] survival_3.7-0            tools_4.3.3              
+    ##  [55] ica_1.0-3                 Rcpp_1.0.12              
+    ##  [57] glue_1.7.0                gridExtra_2.3            
+    ##  [59] SparseArray_1.2.4         xfun_0.45                
+    ##  [61] HDF5Array_1.30.1          withr_3.0.0              
+    ##  [63] fastmap_1.2.0             rhdf5filters_1.14.1      
+    ##  [65] fansi_1.0.6               digest_0.6.36            
+    ##  [67] R6_2.5.1                  mime_0.12                
+    ##  [69] colorspace_2.1-0          scattermore_1.2          
+    ##  [71] tensor_1.5                spatstat.data_3.1-2      
+    ##  [73] R.methodsS3_1.8.2         utf8_1.2.4               
+    ##  [75] generics_0.1.3            data.table_1.15.4        
+    ##  [77] httr_1.4.7                htmlwidgets_1.6.4        
+    ##  [79] S4Arrays_1.2.1            uwot_0.2.2               
+    ##  [81] pkgconfig_2.0.3           gtable_0.3.5             
+    ##  [83] lmtest_0.9-40             XVector_0.42.0           
+    ##  [85] htmltools_0.5.8.1         dotCall64_1.1-1          
+    ##  [87] scales_1.3.0              png_0.1-8                
+    ##  [89] knitr_1.48                reshape2_1.4.4           
+    ##  [91] nlme_3.1-165              zoo_1.8-12               
+    ##  [93] rhdf5_2.46.1              stringr_1.5.1            
+    ##  [95] KernSmooth_2.23-24        parallel_4.3.3           
+    ##  [97] miniUI_0.1.1.1            pillar_1.9.0             
+    ##  [99] grid_4.3.3                vctrs_0.6.5              
+    ## [101] RANN_2.6.1                promises_1.3.0           
+    ## [103] beachmat_2.18.1           xtable_1.8-4             
+    ## [105] cluster_2.1.6             evaluate_0.24.0          
+    ## [107] cli_3.6.3                 locfit_1.5-9.10          
+    ## [109] compiler_4.3.3            rlang_1.1.4              
+    ## [111] crayon_1.5.3              future.apply_1.11.2      
+    ## [113] labeling_0.4.3            plyr_1.8.9               
+    ## [115] stringi_1.8.4             viridisLite_0.4.2        
+    ## [117] deldir_2.0-4              BiocParallel_1.36.0      
+    ## [119] munsell_0.5.1             lazyeval_0.2.2           
+    ## [121] spatstat.geom_3.2-9       Matrix_1.6-5             
+    ## [123] RcppHNSW_0.6.0            sparseMatrixStats_1.14.0 
+    ## [125] future_1.33.2             Rhdf5lib_1.24.2          
+    ## [127] statmod_1.5.0             shiny_1.8.1.1            
+    ## [129] highr_0.11                ROCR_1.0-11              
+    ## [131] igraph_2.0.3
