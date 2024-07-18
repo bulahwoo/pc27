@@ -14,7 +14,7 @@
 
 ## Per base sequence quality
 
-![Per base sequence quality](Images/per_sequence_quality.png)
+![Per base sequence quality](Images/per_sequence_quality.png){: width="50%"}
 
 ## Per tile sequence quality
 
