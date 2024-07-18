@@ -14,7 +14,7 @@
 
 ## :warning: __Per base sequence quality__
 
-![Per base sequence quality](Images/per_base_quality.png) ![Per base sequence quality](Images/per_base_quality.png)
+![Per base sequence quality](Images/per_base_quality.png =20%x) ![Per base sequence quality](Images/per_base_quality.png =20%x)
 
 ## :x: __Per tile sequence quality__
 
