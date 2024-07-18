@@ -16,7 +16,7 @@
 
 ![Per base sequence quality](Images/per_base_quality.png)
 
-## Per tile sequence quality
+## :x: __Per tile sequence quality__
 
 ![Per tile sequence quality](Images/per_tile_quality.png)
 
@@ -24,11 +24,11 @@
 
 ![Per sequence quality scores](Images/per_sequence_quality.png)
 
-## Per base sequence content
+## :x: __Per base sequence content__
 
 ![Per base sequence content](Images/per_base_sequence_content.png)
 
-## Per sequence GC content
+## :x: __Per sequence GC content__
 
 ![Per sequence GC content](Images/per_sequence_gc_content.png)
 
@@ -48,7 +48,7 @@
 
 No overrepresented sequences
 
-## Adapter Content
+## :x: __Adapter Content__
 
 ![Adapter Content](Images/adapter_content.png)
 
