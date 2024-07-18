@@ -1,6 +1,6 @@
-# FastQC Report
+# __FastQC Report__
 
-Basic Statistics
+## __Basic Statistics__
 
 | Measure | Value |
 | --- | --- |
@@ -12,13 +12,43 @@ Basic Statistics
 | Sequence length | 150 |
 | %GC | 37 |
 
-Per base sequence quality
-Per tile sequence quality
-Per sequence quality scores
-Per base sequence content
-Per sequence GC content
-Per base N content
-Sequence Length Distribution
-Sequence Duplication Levels
-Overrepresented sequences
-Adapter Content
+## Per base sequence quality
+
+![Per base sequence quality](Images/per_sequence_quality.png)
+
+## Per tile sequence quality
+
+
+
+## Per sequence quality scores
+
+
+
+## Per base sequence content
+
+
+
+## Per sequence GC content
+
+
+
+## Per base N content
+
+
+
+## Sequence Length Distribution
+
+
+
+## Sequence Duplication Levels
+
+
+
+## Overrepresented sequences
+
+
+
+## Adapter Content
+
+
+
