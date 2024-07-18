@@ -12,7 +12,7 @@
 | Sequence length | 150 |
 | %GC | 37 |
 
-## :warning:__Per base sequence quality__
+## :warning: __Per base sequence quality__
 
 ![Per base sequence quality](Images/per_base_quality.png)
 
@@ -40,7 +40,7 @@
 
 ![Sequence Length Distribution](Images/sequence_length_distribution.png)
 
-## :warning:__Sequence Duplication Levels__
+## :warning: __Sequence Duplication Levels__
 
 ![Sequence Duplication Levels](Images/duplication_levels.png)
 
