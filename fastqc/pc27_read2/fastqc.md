@@ -4,7 +4,7 @@
 
 | Measure | Value |
 | --- | --- |
-| Filename | read1.fq.gz |
+| Filename | pc27_read2.fq.gz |
 | File type | Conventional base calls |
 | Encoding | Sanger / Illumina 1.9 |
 | Total Sequences | 438346872 |
@@ -12,7 +12,7 @@
 | Sequence length | 150 |
 | %GC | 37 |
 
-## :warning: __Per base sequence quality__
+## :white_check_mark: __Per base sequence quality__
 
 ![Per base sequence quality](Images/per_base_quality.png)
 
@@ -24,11 +24,11 @@
 
 ![Per sequence quality scores](Images/per_sequence_quality.png)
 
-## :x: __Per base sequence content__
+## :warning: __Per base sequence content__
 
 ![Per base sequence content](Images/per_base_sequence_content.png)
 
-## :x: __Per sequence GC content__
+## :white_check_mark: __Per sequence GC content__
 
 ![Per sequence GC content](Images/per_sequence_gc_content.png)
 
@@ -40,13 +40,16 @@
 
 ![Sequence Length Distribution](Images/sequence_length_distribution.png)
 
-## :warning: __Sequence Duplication Levels__
+## :x: __Sequence Duplication Levels__
 
 ![Sequence Duplication Levels](Images/duplication_levels.png)
 
-## :white_check_mark: __Overrepresented sequences__
+## :warning: __Overrepresented sequences__
 
-No overrepresented sequences
+| Sequence | Count | Percentage | Possible Source |
+| --- | --- | --- | --- |
+| AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA | 681797 | 0.15553823776344866 | No Hit |
+| GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG | 525008 | 0.1197699889141675 | No Hit |
 
 ## :x: __Adapter Content__
 
