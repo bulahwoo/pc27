@@ -1,7 +1,7 @@
 Single-cell RNA sequencing of *Phymatopus californicus* sample PC27
 ================
 Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
-July 18, 2024
+July 19, 2024
 
 ## Genome assembly and annotation
 
@@ -18,7 +18,7 @@ Mitochondrial genome was identified by aligning the genome assembly
 against the mt genomes of *Bombyx mori* and *Yponomeuta evonymella*
 using [minimap2](https://github.com/lh3/minimap2). The annotation of mt
 genome was carried out with
-[mitos](https://usegalaxy.org.au/root?tool_id=toolshed.g2.bx.psu.edu/repos/iuc/mitos2/mitos2/2.1.3+galaxy0)
+[mitos2](https://usegalaxy.org.au/root?tool_id=toolshed.g2.bx.psu.edu/repos/iuc/mitos2/mitos2/2.1.9+galaxy0)
 on the Galaxy platform.
 
 ## Library preparation
@@ -41,7 +41,8 @@ Size distribution assessed by Bioanalyzer
 
 [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was
 used for quality check. Output can be found
-[here](fastqc/read1/fastqc.md) and [here](fastqc/read2/fastqc.md).
+[here](fastqc/pc27_read1/fastqc.md) and
+[here](fastqc/pc27_read2/fastqc.md).
 
 ## Drop-seq protocol
 

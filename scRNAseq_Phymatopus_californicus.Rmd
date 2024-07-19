@@ -22,19 +22,19 @@ setwd("/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus")
 
 ## Genome assembly and annotation
 
-The _P. californicus_ genome was sequenced in [Petr Nguyen's lab](https://www.entu.cas.cz/en/departments/department-of-ecology-and-conservation-biology/laboratory-of-evolutionary-genetics/) using Oxford Nanopore technology and assembled with [Flye](https://github.com/mikolmogorov/Flye). Annotation of the genome was performed with [BRAKER3](https://github.com/Gaius-Augustus/BRAKER). The RNA-seq data utilized include the publicly accessible [SRR1021622](https://www.ncbi.nlm.nih.gov/sra/?term=SRR1021622) and additional data provided by [Michal Zurovec](https://www.entu.cas.cz/en/staff/profile/269-michalzurovec/). Mitochondrial genome was identified by aligning the genome assembly against the mt genomes of _Bombyx mori_ and _Yponomeuta evonymella_ using [minimap2](https://github.com/lh3/minimap2). The annotation of mt genome was carried out with [mitos](https://usegalaxy.org.au/root?tool_id=toolshed.g2.bx.psu.edu/repos/iuc/mitos2/mitos2/2.1.3+galaxy0) on the Galaxy platform.
+The _P. californicus_ genome was sequenced in [Petr Nguyen's lab](https://www.entu.cas.cz/en/departments/department-of-ecology-and-conservation-biology/laboratory-of-evolutionary-genetics/) using Oxford Nanopore technology and assembled with [Flye](https://github.com/mikolmogorov/Flye). Annotation of the genome was performed with [BRAKER3](https://github.com/Gaius-Augustus/BRAKER). The RNA-seq data utilized include the publicly accessible [SRR1021622](https://www.ncbi.nlm.nih.gov/sra/?term=SRR1021622) and additional data provided by [Michal Zurovec](https://www.entu.cas.cz/en/staff/profile/269-michalzurovec/). Mitochondrial genome was identified by aligning the genome assembly against the mt genomes of _Bombyx mori_ and _Yponomeuta evonymella_ using [minimap2](https://github.com/lh3/minimap2). The annotation of mt genome was carried out with [mitos2](https://usegalaxy.org.au/root?tool_id=toolshed.g2.bx.psu.edu/repos/iuc/mitos2/mitos2/2.1.9+galaxy0) on the Galaxy platform.
 
 ## Library preparation
 
 The scRNA-seq library was prepared with the RNAdia 2.0 kit (Dolomite Bio), following the manufacturer's instructions. Approximately 8,000 cells were captured, and the size distribution of the library was examined using the Bioanalyzer system.
 
 ```{r bioanalyzer, echo=FALSE, fig.cap="Size distribution assessed by Bioanalyzer", out.width = '60%', fig.align = 'center'}
-knitr::include_graphics("/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus/data/bioanalyzer_pc27.png")
+knitr::include_graphics("data/bioanalyzer_pc27.png")
 ```
 
 ## Quality control checks on raw reads
 
-[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was used for quality check. Output can be found [here](fastqc/read1/fastqc.md) and [here](fastqc/read2/fastqc.md).
+[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) was used for quality check. Output can be found [here](fastqc/pc27_read1/fastqc.md) and [here](fastqc/pc27_read2/fastqc.md).
 
 ## Drop-seq protocol
 
