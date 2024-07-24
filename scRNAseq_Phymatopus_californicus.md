@@ -1,4 +1,5 @@
-Single-cell RNA sequencing of *Phymatopus californicus* sample PC27
+Single-cell RNA sequencing of *Phymatopus californicus* sample PC27 with
+Drop-seq core computational protocol
 ================
 Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
 July 24, 2024
@@ -412,7 +413,7 @@ so_pc27.markers %>% arrange(desc(avg_log2FC)) %>% group_by(cluster) %>% dplyr::s
 The above table shows, in each cluster, three genes with largest average
 log2 fold-change value (avg_log2FC). We can visualize the marker gene
 expression (from left to right: top1, top2, top3; from top to bottom:
-cluster 0, 1, 2, 3, 4).
+cluster 0, 1, 2, 3, …, 10 and 11).
 
 ![](scRNAseq_Phymatopus_californicus_files/figure-gfm/marker02-1.png)<!-- -->
 
