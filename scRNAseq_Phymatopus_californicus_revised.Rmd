@@ -312,7 +312,7 @@ so_pc27.markers <- FindAllMarkers(so_pc27, only.pos = TRUE, logfc.threshold = 0.
 so_pc27.markers %>% arrange(desc(avg_log2FC)) %>% group_by(cluster) %>% dplyr::slice(1:3) %>% as.data.frame()
 ```
 
-The above table shows, in each cluster, three genes with largest average log2 fold-change value (avg_log2FC). We can visualize the marker gene expression (from left to right: top1, top2, top3; from top to bottom: cluster 0, 1, 2, 3, 4, 5, 6 and 7).
+The above table shows, in each cluster, three genes with largest average log2 fold-change value (avg_log2FC). We can visualize the marker gene expression (from left to right: top1, top2, top3; from top to bottom: cluster 0, 1, 2, 3, 4, 5 and 6).
 
 ```{r marker02, echo=FALSE, fig.width=16, fig.height=4}
 default_top1_markers_list <- so_pc27.markers %>% arrange(desc(avg_log2FC)) %>% group_by(cluster) %>% dplyr::slice(1:1) %>% pull(gene)

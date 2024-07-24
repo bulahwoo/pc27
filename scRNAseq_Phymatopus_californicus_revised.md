@@ -275,7 +275,7 @@ so_pc27.markers %>% arrange(desc(avg_log2FC)) %>% group_by(cluster) %>% dplyr::s
 The above table shows, in each cluster, three genes with largest average
 log2 fold-change value (avg_log2FC). We can visualize the marker gene
 expression (from left to right: top1, top2, top3; from top to bottom:
-cluster 0, 1, 2, 3, 4, 5, 6 and 7).
+cluster 0, 1, 2, 3, 4, 5 and 6).
 
 ![](scRNAseq_Phymatopus_californicus_revised_files/figure-gfm/marker02-1.png)<!-- -->
 
