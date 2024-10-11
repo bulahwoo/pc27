@@ -16,7 +16,7 @@ library(rmarkdown)
 library(DropletUtils)
 library(patchwork)
 library(RColorBrewer)
-setwd("/media/nguyen/Data1/github/bulahwoo/scRNAseq_Phymatopus_californicus")
+setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/02_starsolo/")
 ```
 
 ## STARsolo
@@ -29,7 +29,7 @@ cat /media/nguyen/Data1/mao/scseq/starsolo/nows26_pc27_8k/sh_starsolo_nows26_pc2
 Cell filtering is implemented in STARsolo, so the output is a filtered matrix.
 
 ```{r matrix}
-mtx_pc27 <- ReadSTARsolo("/media/nguyen/Data1/mao/scseq/starsolo/nows26_pc27_8k/Solo.out/Gene/filtered")
+mtx_pc27 <- ReadSTARsolo("/media/nguyen/Data1/mao/scseq/starsolo/nows26_pc27_8k/Solo.out/Gene/filtered/")
 str(mtx_pc27)
 ```
 

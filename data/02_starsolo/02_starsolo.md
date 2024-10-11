@@ -2,7 +2,7 @@ Single-cell RNA sequencing of *Phymatopus californicus* sample PC27 with
 STARsolo
 ================
 Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
-July 24, 2024
+October 11, 2024
 
 ## STARsolo
 
@@ -68,7 +68,7 @@ Cell filtering is implemented in STARsolo, so the output is a filtered
 matrix.
 
 ``` r
-mtx_pc27 <- ReadSTARsolo("/media/nguyen/Data1/mao/scseq/starsolo/nows26_pc27_8k/Solo.out/Gene/filtered")
+mtx_pc27 <- ReadSTARsolo("/media/nguyen/Data1/mao/scseq/starsolo/nows26_pc27_8k/Solo.out/Gene/filtered/")
 str(mtx_pc27)
 ```
 
@@ -101,7 +101,7 @@ each cell (left), the total number of unique genes in each cell
 (middle), and the percentage of reads mapped to the mitochondrial genome
 (right).
 
-![](scRNAseq_Phymatopus_californicus_starsolo_files/figure-gfm/violin1-1.png)<!-- -->
+![](02_starsolo_files/figure-gfm/violin1-1.png)<!-- -->
 
 We further filtered cells (1) with feature counts larger than 2500 or
 less than 200 or (2) with mitochondrial counts larger than 5%.
@@ -114,7 +114,7 @@ so_pc27 <- CreateSeuratObject(counts = mtx_pc27, min.cells = 3, min.features = 2
 
 We checked the diagnostic plots after filtering.
 
-![](scRNAseq_Phymatopus_californicus_starsolo_files/figure-gfm/violin2-1.png)<!-- -->
+![](02_starsolo_files/figure-gfm/violin2-1.png)<!-- -->
 
 UMAP clustering of data from 1333 cells revealed 5 cell clusters.
 
@@ -166,7 +166,7 @@ ggplot(df_umap) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-![](scRNAseq_Phymatopus_californicus_starsolo_files/figure-gfm/umap-1.png)<!-- -->
+![](02_starsolo_files/figure-gfm/umap-1.png)<!-- -->
 
 Genes differentially expressed among each cluster were selected as
 marker genes.
@@ -177,28 +177,28 @@ so_pc27.markers %>% arrange(desc(avg_log2FC)) %>% group_by(cluster) %>% dplyr::s
 ```
 
     ##           p_val avg_log2FC pct.1 pct.2    p_val_adj cluster   gene
-    ## 1  5.535236e-04   3.203598 0.016 0.001 1.000000e+00       0  g5762
-    ## 2  2.175749e-03   2.981206 0.014 0.001 1.000000e+00       0  g1493
-    ## 3  6.215883e-05   2.855675 0.027 0.003 3.958896e-01       0  g9315
-    ## 4  3.544959e-05   2.583037 0.034 0.005 2.257785e-01       1  g8659
-    ## 5  7.067905e-03   2.467559 0.014 0.002 1.000000e+00       1  g2600
-    ## 6  3.198743e-03   1.982133 0.025 0.006 1.000000e+00       1  g3797
-    ## 7  5.160620e-06   2.938863 0.038 0.005 3.286799e-02       2  g7219
-    ## 8  1.765301e-03   2.938863 0.017 0.002 1.000000e+00       2  g1816
-    ## 9  3.575273e-07   2.687324 0.055 0.008 2.277092e-03       2  g6782
-    ## 10 1.235385e-06   2.854005 0.047 0.006 7.868167e-03       3 g10291
-    ## 11 1.241530e-03   2.394573 0.028 0.005 1.000000e+00       3  g2578
+    ## 1  5.535557e-04   3.203598 0.016 0.001 1.000000e+00       0  g5762
+    ## 2  2.175823e-03   2.981206 0.014 0.001 1.000000e+00       0  g1493
+    ## 3  6.217558e-05   2.855675 0.027 0.003 3.959963e-01       0  g9315
+    ## 4  3.546706e-05   2.583037 0.034 0.005 2.258897e-01       1  g8659
+    ## 5  7.068164e-03   2.467559 0.014 0.002 1.000000e+00       1  g2600
+    ## 6  3.199392e-03   1.982133 0.025 0.006 1.000000e+00       1  g3797
+    ## 7  5.162690e-06   2.938863 0.038 0.005 3.288118e-02       2  g7219
+    ## 8  1.765362e-03   2.938863 0.017 0.002 1.000000e+00       2  g1816
+    ## 9  3.579697e-07   2.687324 0.055 0.008 2.279909e-03       2  g6782
+    ## 10 1.236212e-06   2.854005 0.047 0.006 7.873432e-03       3 g10291
+    ## 11 1.241720e-03   2.394573 0.028 0.005 1.000000e+00       3  g2578
     ## 12 7.938114e-16   2.297276 0.183 0.038 5.055785e-12       3  g3231
-    ## 13 6.625362e-08   5.185768 0.025 0.000 4.219693e-04       4  g7581
+    ## 13 6.625643e-08   5.185768 0.025 0.000 4.219872e-04       4  g7581
     ## 14 1.359459e-04   5.185768 0.012 0.000 8.658394e-01       4  g6181
-    ## 15 7.381074e-16   5.086232 0.068 0.002 4.701006e-12       4  g1204
+    ## 15 7.381095e-16   5.086232 0.068 0.002 4.701020e-12       4  g1204
 
 The above table shows, in each cluster, three genes with largest average
 log2 fold-change value (avg_log2FC). We can visualize the marker gene
 expression (from left to right: top1, top2, top3; from top to bottom:
 cluster 0, 1, 2, 3 and 4).
 
-![](scRNAseq_Phymatopus_californicus_starsolo_files/figure-gfm/marker02-1.png)<!-- -->
+![](02_starsolo_files/figure-gfm/marker02-1.png)<!-- -->
 
 We noticed the high adjusted *P*-value (p_val_adj) for marker genes in
 all clusters, so we filtered genes with p_val_adj \>= 0.05
@@ -209,24 +209,24 @@ so_pc27.markers %>% filter(p_val_adj < 0.05) %>% arrange(desc(avg_log2FC)) %>% g
 
     ##           p_val avg_log2FC pct.1 pct.2    p_val_adj cluster   gene
     ## 1  1.412450e-07  2.1667613 0.074 0.017 8.995895e-04       0 g10996
-    ## 2  5.477981e-13  2.0447708 0.144 0.035 3.488926e-09       0  g4905
-    ## 3  2.751383e-07  1.9108163 0.076 0.019 1.752356e-03       0  g3302
+    ## 2  5.478051e-13  2.0447708 0.144 0.035 3.488971e-09       0  g4905
+    ## 3  2.751387e-07  1.9108163 0.076 0.019 1.752358e-03       0  g3302
     ## 4  1.974232e-11  0.4121379 0.983 0.896 1.257388e-07       1  g9143
-    ## 5  5.160620e-06  2.9388630 0.038 0.005 3.286799e-02       2  g7219
-    ## 6  3.575273e-07  2.6873242 0.055 0.008 2.277092e-03       2  g6782
-    ## 7  6.051399e-23  2.5644675 0.210 0.035 3.854136e-19       2  g2939
-    ## 8  1.235385e-06  2.8540050 0.047 0.006 7.868167e-03       3 g10291
+    ## 5  5.162690e-06  2.9388630 0.038 0.005 3.288118e-02       2  g7219
+    ## 6  3.579697e-07  2.6873242 0.055 0.008 2.279909e-03       2  g6782
+    ## 7  6.051542e-23  2.5644675 0.210 0.035 3.854227e-19       2  g2939
+    ## 8  1.236212e-06  2.8540050 0.047 0.006 7.873432e-03       3 g10291
     ## 9  7.938114e-16  2.2972762 0.183 0.038 5.055785e-12       3  g3231
     ## 10 5.930621e-09  2.0384296 0.113 0.027 3.777213e-05       3  g5171
-    ## 11 6.625362e-08  5.1857681 0.025 0.000 4.219693e-04       4  g7581
-    ## 12 7.381074e-16  5.0862324 0.068 0.002 4.701006e-12       4  g1204
+    ## 11 6.625643e-08  5.1857681 0.025 0.000 4.219872e-04       4  g7581
+    ## 12 7.381095e-16  5.0862324 0.068 0.002 4.701020e-12       4  g1204
     ## 13 5.889639e-69  5.0593908 0.385 0.022 3.751111e-65       4  g3576
 
 We can visualize the marker gene expression with filtered data. Note
 that cluster 1 only has one marker gene that meets this filtering
 criterion.
 
-![](scRNAseq_Phymatopus_californicus_starsolo_files/figure-gfm/marker04-1.png)<!-- -->
+![](02_starsolo_files/figure-gfm/marker04-1.png)<!-- -->
 
 The below table shows top10 marker genes in each cluster with inferred
 gene names derived from annotated reference genomes *Bombyx mori*,
@@ -240,44 +240,44 @@ selected_markers %>% inner_join(gene_name, by=join_by(gene == V1)) %>% select(!c
 
     ##           p_val avg_log2FC pct.1 pct.2    p_val_adj cluster   gene
     ## 1  1.412450e-07  2.1667613 0.074 0.017 8.995895e-04       0 g10996
-    ## 2  5.477981e-13  2.0447708 0.144 0.035 3.488926e-09       0  g4905
-    ## 3  2.751383e-07  1.9108163 0.076 0.019 1.752356e-03       0  g3302
+    ## 2  5.478051e-13  2.0447708 0.144 0.035 3.488971e-09       0  g4905
+    ## 3  2.751387e-07  1.9108163 0.076 0.019 1.752358e-03       0  g3302
     ## 4  4.870103e-06  1.9032031 0.068 0.019 3.101768e-02       0  g1879
-    ## 5  6.041019e-08  1.8816700 0.093 0.025 3.847525e-04       0  g8950
-    ## 6  3.831238e-07  1.8816700 0.087 0.025 2.440115e-03       0  g8216
-    ## 7  1.481732e-06  1.8816700 0.074 0.020 9.437150e-03       0  g9017
-    ## 8  6.221233e-09  1.8469045 0.109 0.030 3.962303e-05       0  g5649
-    ## 9  2.070235e-08  1.8469045 0.104 0.029 1.318532e-04       0  g5296
-    ## 10 3.855241e-06  1.8292025 0.071 0.020 2.455403e-02       0  g3726
+    ## 5  6.101630e-08  1.8816700 0.093 0.025 3.886128e-04       0  g8950
+    ## 6  3.831239e-07  1.8816700 0.087 0.025 2.440116e-03       0  g8216
+    ## 7  1.489084e-06  1.8816700 0.074 0.020 9.483977e-03       0  g9017
+    ## 8  6.323653e-09  1.8469045 0.109 0.030 4.027535e-05       0  g5649
+    ## 9  2.070237e-08  1.8469045 0.104 0.029 1.318534e-04       0  g5296
+    ## 10 3.872132e-06  1.8292025 0.071 0.020 2.466161e-02       0  g3726
     ## 11 1.974232e-11  0.4121379 0.983 0.896 1.257388e-07       1  g9143
-    ## 12 5.160620e-06  2.9388630 0.038 0.005 3.286799e-02       2  g7219
-    ## 13 3.575273e-07  2.6873242 0.055 0.008 2.277092e-03       2  g6782
-    ## 14 6.051399e-23  2.5644675 0.210 0.035 3.854136e-19       2  g2939
+    ## 12 5.162690e-06  2.9388630 0.038 0.005 3.288118e-02       2  g7219
+    ## 13 3.579697e-07  2.6873242 0.055 0.008 2.279909e-03       2  g6782
+    ## 14 6.051542e-23  2.5644675 0.210 0.035 3.854227e-19       2  g2939
     ## 15 4.620245e-10  2.5389324 0.092 0.016 2.942634e-06       2   g672
-    ## 16 3.348870e-13  2.5238255 0.122 0.021 2.132896e-09       2  g1267
-    ## 17 4.921303e-12  2.4470099 0.122 0.024 3.134378e-08       2  g8919
+    ## 16 3.396858e-13  2.5238255 0.122 0.021 2.163459e-09       2  g1267
+    ## 17 4.921305e-12  2.4470099 0.122 0.024 3.134379e-08       2  g8919
     ## 18 1.311605e-09  2.3863220 0.097 0.019 8.353609e-06       2  g2992
-    ## 19 6.849829e-06  2.3088126 0.055 0.011 4.362656e-02       2  g8268
+    ## 19 6.858476e-06  2.3088126 0.055 0.011 4.368164e-02       2  g8268
     ## 20 3.233303e-07  2.2758980 0.076 0.016 2.059290e-03       2  g7924
-    ## 21 7.227198e-06  2.2018974 0.059 0.013 4.603002e-02       2  g1996
-    ## 22 1.235385e-06  2.8540050 0.047 0.006 7.868167e-03       3 g10291
+    ## 21 7.238619e-06  2.2018974 0.059 0.013 4.610276e-02       2  g1996
+    ## 22 1.236212e-06  2.8540050 0.047 0.006 7.873432e-03       3 g10291
     ## 23 7.938114e-16  2.2972762 0.183 0.038 5.055785e-12       3  g3231
     ## 24 5.930621e-09  2.0384296 0.113 0.027 3.777213e-05       3  g5171
-    ## 25 2.045091e-08  2.0075503 0.113 0.029 1.302519e-04       3  g4244
-    ## 26 3.673483e-11  1.8640587 0.211 0.071 2.339641e-07       3 g10722
-    ## 27 7.351290e-17  1.8141123 0.343 0.122 4.682037e-13       3  g1138
+    ## 25 2.045092e-08  2.0075503 0.113 0.029 1.302519e-04       3  g4244
+    ## 26 3.673486e-11  1.8640587 0.211 0.071 2.339643e-07       3 g10722
+    ## 27 7.351292e-17  1.8141123 0.343 0.122 4.682038e-13       3  g1138
     ## 28 9.217908e-15  1.7936694 0.235 0.066 5.870886e-11       3 g11133
-    ## 29 8.765243e-17  1.7756636 0.291 0.089 5.582583e-13       3  g4458
-    ## 30 2.930143e-16  1.7441578 0.296 0.095 1.866208e-12       3  g2270
+    ## 29 8.765644e-17  1.7756636 0.291 0.089 5.582838e-13       3  g4458
+    ## 30 2.930144e-16  1.7441578 0.296 0.095 1.866209e-12       3  g2270
     ## 31 9.631030e-07  1.7231961 0.117 0.038 6.134003e-03       3  g4345
-    ## 32 6.625362e-08  5.1857681 0.025 0.000 4.219693e-04       4  g7581
-    ## 33 7.381074e-16  5.0862324 0.068 0.002 4.701006e-12       4  g1204
+    ## 32 6.625643e-08  5.1857681 0.025 0.000 4.219872e-04       4  g7581
+    ## 33 7.381095e-16  5.0862324 0.068 0.002 4.701020e-12       4  g1204
     ## 34 5.889639e-69  5.0593908 0.385 0.022 3.751111e-65       4  g3576
     ## 35 5.882586e-21  4.9342293 0.099 0.003 3.746619e-17       4  g7818
     ## 36 5.709581e-83  4.9191224 0.522 0.044 3.636432e-79       4  g2094
-    ## 37 2.934508e-06  4.8638400 0.019 0.000 1.868988e-02       4  g2746
-    ## 38 2.934508e-06  4.8638400 0.019 0.000 1.868988e-02       4 g11213
-    ## 39 6.066865e-39  4.7813778 0.186 0.006 3.863986e-35       4  g4065
+    ## 37 2.934559e-06  4.8638400 0.019 0.000 1.869020e-02       4  g2746
+    ## 38 2.934559e-06  4.8638400 0.019 0.000 1.869020e-02       4 g11213
+    ## 39 6.067027e-39  4.7813778 0.186 0.006 3.864090e-35       4  g4065
     ## 40 4.610965e-26  4.7483628 0.155 0.010 2.936724e-22       4  g9235
     ## 41 8.786735e-32  4.6869622 0.180 0.010 5.596271e-28       4 g11028
     ##                                                                  Bombyx_mori
@@ -327,7 +327,7 @@ selected_markers %>% inner_join(gene_name, by=join_by(gene == V1)) %>% select(!c
 
     ## R version 4.3.3 (2024-02-29)
     ## Platform: x86_64-conda-linux-gnu (64-bit)
-    ## Running under: Ubuntu 22.04.4 LTS
+    ## Running under: Ubuntu 22.04.5 LTS
     ## 
     ## Matrix products: default
     ## BLAS/LAPACK: /home/nguyen/miniforge-pypy3/envs/seurat510/lib/libopenblasp-r0.3.27.so;  LAPACK version 3.12.0
@@ -362,69 +362,69 @@ selected_markers %>% inner_join(gene_name, by=join_by(gene == V1)) %>% select(!c
     ## 
     ## loaded via a namespace (and not attached):
     ##   [1] RcppAnnoy_0.0.22          splines_4.3.3            
-    ##   [3] later_1.3.2               bitops_1.0-7             
+    ##   [3] later_1.3.2               bitops_1.0-8             
     ##   [5] tibble_3.2.1              R.oo_1.26.0              
     ##   [7] polyclip_1.10-7           fastDummies_1.7.3        
     ##   [9] lifecycle_1.0.4           edgeR_4.0.16             
     ##  [11] globals_0.16.3            lattice_0.22-6           
     ##  [13] MASS_7.3-60               magrittr_2.0.3           
     ##  [15] limma_3.58.1              plotly_4.10.4            
-    ##  [17] yaml_2.3.9                httpuv_1.6.15            
+    ##  [17] yaml_2.3.10               httpuv_1.6.15            
     ##  [19] glmGamPoi_1.14.3          sctransform_0.4.1        
     ##  [21] spam_2.10-0               spatstat.sparse_3.1-0    
     ##  [23] reticulate_1.38.0         cowplot_1.1.3            
     ##  [25] pbapply_1.7-2             abind_1.4-5              
     ##  [27] zlibbioc_1.48.2           Rtsne_0.17               
-    ##  [29] purrr_1.0.2               R.utils_2.12.3           
-    ##  [31] RCurl_1.98-1.16           GenomeInfoDbData_1.2.11  
-    ##  [33] irlba_2.3.5.1             listenv_0.9.1            
-    ##  [35] spatstat.utils_3.0-5      goftest_1.2-3            
-    ##  [37] RSpectra_0.16-2           spatstat.random_3.3-1    
-    ##  [39] dqrng_0.4.1               fitdistrplus_1.2-1       
-    ##  [41] parallelly_1.37.1         DelayedMatrixStats_1.24.0
-    ##  [43] leiden_0.4.3.1            codetools_0.2-20         
-    ##  [45] DelayedArray_0.28.0       scuttle_1.12.0           
-    ##  [47] tidyselect_1.2.1          farver_2.1.2             
-    ##  [49] spatstat.explore_3.3-1    jsonlite_1.8.8           
-    ##  [51] progressr_0.14.0          ggridges_0.5.6           
-    ##  [53] survival_3.7-0            tools_4.3.3              
-    ##  [55] ica_1.0-3                 Rcpp_1.0.13              
-    ##  [57] glue_1.7.0                gridExtra_2.3            
-    ##  [59] SparseArray_1.2.4         xfun_0.46                
-    ##  [61] HDF5Array_1.30.1          withr_3.0.0              
-    ##  [63] fastmap_1.2.0             rhdf5filters_1.14.1      
-    ##  [65] fansi_1.0.6               digest_0.6.36            
-    ##  [67] R6_2.5.1                  mime_0.12                
-    ##  [69] colorspace_2.1-0          scattermore_1.2          
-    ##  [71] tensor_1.5                spatstat.data_3.1-2      
-    ##  [73] R.methodsS3_1.8.2         utf8_1.2.4               
-    ##  [75] generics_0.1.3            data.table_1.15.4        
-    ##  [77] httr_1.4.7                htmlwidgets_1.6.4        
-    ##  [79] S4Arrays_1.2.1            uwot_0.2.2               
-    ##  [81] pkgconfig_2.0.3           gtable_0.3.5             
-    ##  [83] lmtest_0.9-40             XVector_0.42.0           
-    ##  [85] htmltools_0.5.8.1         dotCall64_1.1-1          
-    ##  [87] scales_1.3.0              png_0.1-8                
-    ##  [89] spatstat.univar_3.0-0     knitr_1.48               
-    ##  [91] rstudioapi_0.16.0         reshape2_1.4.4           
-    ##  [93] nlme_3.1-165              zoo_1.8-12               
-    ##  [95] rhdf5_2.46.1              stringr_1.5.1            
-    ##  [97] KernSmooth_2.23-24        parallel_4.3.3           
-    ##  [99] miniUI_0.1.1.1            pillar_1.9.0             
-    ## [101] grid_4.3.3                vctrs_0.6.5              
-    ## [103] RANN_2.6.1                promises_1.3.0           
-    ## [105] beachmat_2.18.1           xtable_1.8-4             
-    ## [107] cluster_2.1.6             evaluate_0.24.0          
-    ## [109] cli_3.6.3                 locfit_1.5-9.10          
-    ## [111] compiler_4.3.3            rlang_1.1.4              
-    ## [113] crayon_1.5.3              future.apply_1.11.2      
-    ## [115] labeling_0.4.3            plyr_1.8.9               
-    ## [117] stringi_1.8.4             viridisLite_0.4.2        
-    ## [119] deldir_2.0-4              BiocParallel_1.36.0      
-    ## [121] munsell_0.5.1             lazyeval_0.2.2           
-    ## [123] spatstat.geom_3.3-2       Matrix_1.6-5             
-    ## [125] RcppHNSW_0.6.0            sparseMatrixStats_1.14.0 
-    ## [127] future_1.33.2             Rhdf5lib_1.24.2          
-    ## [129] statmod_1.5.0             shiny_1.8.1.1            
-    ## [131] highr_0.11                ROCR_1.0-11              
-    ## [133] igraph_2.0.3
+    ##  [29] presto_1.0.0              purrr_1.0.2              
+    ##  [31] R.utils_2.12.3            RCurl_1.98-1.16          
+    ##  [33] GenomeInfoDbData_1.2.11   irlba_2.3.5.1            
+    ##  [35] listenv_0.9.1             spatstat.utils_3.0-5     
+    ##  [37] goftest_1.2-3             RSpectra_0.16-2          
+    ##  [39] spatstat.random_3.3-1     dqrng_0.4.1              
+    ##  [41] fitdistrplus_1.2-1        parallelly_1.38.0        
+    ##  [43] DelayedMatrixStats_1.24.0 leiden_0.4.3.1           
+    ##  [45] codetools_0.2-20          DelayedArray_0.28.0      
+    ##  [47] scuttle_1.12.0            tidyselect_1.2.1         
+    ##  [49] farver_2.1.2              spatstat.explore_3.3-1   
+    ##  [51] jsonlite_1.8.8            progressr_0.14.0         
+    ##  [53] ggridges_0.5.6            survival_3.7-0           
+    ##  [55] tools_4.3.3               ica_1.0-3                
+    ##  [57] Rcpp_1.0.13               glue_1.7.0               
+    ##  [59] gridExtra_2.3             SparseArray_1.2.4        
+    ##  [61] xfun_0.46                 HDF5Array_1.30.1         
+    ##  [63] withr_3.0.1               fastmap_1.2.0            
+    ##  [65] rhdf5filters_1.14.1       fansi_1.0.6              
+    ##  [67] digest_0.6.36             R6_2.5.1                 
+    ##  [69] mime_0.12                 colorspace_2.1-1         
+    ##  [71] scattermore_1.2           tensor_1.5               
+    ##  [73] spatstat.data_3.1-2       R.methodsS3_1.8.2        
+    ##  [75] utf8_1.2.4                generics_0.1.3           
+    ##  [77] data.table_1.16.0         httr_1.4.7               
+    ##  [79] htmlwidgets_1.6.4         S4Arrays_1.2.1           
+    ##  [81] uwot_0.2.2                pkgconfig_2.0.3          
+    ##  [83] gtable_0.3.5              lmtest_0.9-40            
+    ##  [85] XVector_0.42.0            htmltools_0.5.8.1        
+    ##  [87] dotCall64_1.1-1           scales_1.3.0             
+    ##  [89] png_0.1-8                 spatstat.univar_3.0-0    
+    ##  [91] knitr_1.48                rstudioapi_0.16.0        
+    ##  [93] reshape2_1.4.4            nlme_3.1-165             
+    ##  [95] zoo_1.8-12                rhdf5_2.46.1             
+    ##  [97] stringr_1.5.1             KernSmooth_2.23-24       
+    ##  [99] parallel_4.3.3            miniUI_0.1.1.1           
+    ## [101] pillar_1.9.0              grid_4.3.3               
+    ## [103] vctrs_0.6.5               RANN_2.6.1               
+    ## [105] promises_1.3.0            beachmat_2.18.1          
+    ## [107] xtable_1.8-4              cluster_2.1.6            
+    ## [109] evaluate_0.24.0           cli_3.6.3                
+    ## [111] locfit_1.5-9.10           compiler_4.3.3           
+    ## [113] rlang_1.1.4               crayon_1.5.3             
+    ## [115] future.apply_1.11.2       labeling_0.4.3           
+    ## [117] plyr_1.8.9                stringi_1.8.4            
+    ## [119] viridisLite_0.4.2         deldir_2.0-4             
+    ## [121] BiocParallel_1.36.0       munsell_0.5.1            
+    ## [123] lazyeval_0.2.2            spatstat.geom_3.3-2      
+    ## [125] Matrix_1.6-5              RcppHNSW_0.6.0           
+    ## [127] sparseMatrixStats_1.14.0  future_1.34.0            
+    ## [129] Rhdf5lib_1.24.2           statmod_1.5.0            
+    ## [131] shiny_1.9.0               highr_0.11               
+    ## [133] ROCR_1.0-11               igraph_2.0.3
