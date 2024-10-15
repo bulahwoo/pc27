@@ -8,8 +8,10 @@
 
 [Analysis with Drop-seq core computational protocol (t5)](data/07_dropseqT5/07_dropseqT5.md)
 
-[(obsolete) Discrepancy between the outputs](data/03_vs/03_vs.md)
+---
 
 [(obsolete) Analysis with Drop-seq core computational protocol](data/01_dropseq/01_dropseq.md)
 
 [(obsolete) Analysis with STARsolo](data/02_starsolo/02_starsolo.md)
+
+[(obsolete) Discrepancy between the outputs](data/03_vs/03_vs.md)
