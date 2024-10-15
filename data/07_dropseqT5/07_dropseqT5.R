@@ -9,7 +9,7 @@ library(patchwork)
 library(RColorBrewer)
 library(gt)
 library(tximport)
-setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/04_dropseq/")
+setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/07_dropseqT5/")
 
 `%ni%` <- Negate(`%in%`)
 
@@ -32,7 +32,7 @@ ggp_theme_bw_square_02 <-
         legend.justification=c(1, 0.85))
 
 # load dge
-dge <- read.table("/media/nguyen/Data1/mao/scseq/select_polyt/dropseq_original/dge_t20.txt.gz", header = TRUE, row.names = 1, stringsAsFactors = FALSE)
+dge <- read.table("/media/nguyen/Data1/mao/scseq/select_polyt/dropseq_original/dge_t5.txt.gz", header = TRUE, row.names = 1, stringsAsFactors = FALSE)
 
 # barcodeRanks()
 br.out <- barcodeRanks(dge)

@@ -9,7 +9,7 @@ library(patchwork)
 library(RColorBrewer)
 library(gt)
 library(tximport)
-setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/04_dropseq/")
+setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/06_starsoloFiltered/")
 
 `%ni%` <- Negate(`%in%`)
 
@@ -32,48 +32,14 @@ ggp_theme_bw_square_02 <-
         legend.justification=c(1, 0.85))
 
 # load dge
-dge <- read.table("/media/nguyen/Data1/mao/scseq/select_polyt/dropseq_original/dge_t20.txt.gz", header = TRUE, row.names = 1, stringsAsFactors = FALSE)
+dge_raw <- ReadSTARsolo("/media/nguyen/Data1/mao/scseq/select_polyt/starsolo_original/Solo.out/Gene/raw/")
+dge <- ReadSTARsolo("/media/nguyen/Data1/mao/scseq/select_polyt/starsolo_original/Solo.out/Gene/filtered/")
 
 # barcodeRanks()
-br.out <- barcodeRanks(dge)
-o <- order(br.out$rank)
-metadata(br.out) # knee and inflection are values of br.out$total (y-axis)
-knee <- metadata(br.out)$knee %>% round()
-inflection <- metadata(br.out)$inflection %>% round()
-# which br.out$rank value (x-axis) corresponds to knee value (y-axis)
-knee_rank <- br.out %>% as_tibble() %>% filter(total==knee) %>% arrange(rank) %>% dplyr::slice(1) %>% pull(rank)
-# which br.out$rank value (x-axis) corresponds to inflection value (y-axis)
-inflection_rank <- br.out %>% as_tibble() %>% filter(total==inflection) %>% arrange(rank) %>% dplyr::slice(1) %>% pull(rank)
-
-plt_barcoderanks <-
-  ggplot()+
-  geom_point(aes(x=br.out$rank, y=br.out$total+1), color="grey50", size=0.5, alpha=0.5)+
-  geom_line(aes(x=br.out$rank[o],y=br.out$fitted[o]), color="magenta")+
-  geom_hline(aes(yintercept=knee), color="dodgerblue", linetype=2)+
-  geom_hline(aes(yintercept=inflection), color="brown", linetype=2)+
-  geom_vline(aes(xintercept=knee_rank), color="orange", linetype=3)+
-  geom_vline(aes(xintercept=inflection_rank), color="orange", linetype=3)+
-  annotate("text", x=11, y=1100, label=paste0("(", knee_rank, ", ", knee, ")"))+
-  annotate("text", x=1100, y=110, label=paste0("(", inflection_rank, ", ", inflection, ")"))+
-  #scale_x_continuous(trans='log10', limits=c(1, 10^(floor(log10(inflection_rank)) + 2)), breaks=c(10^(1:(floor(log10(inflection_rank)) + 2))), labels = scales::number)+
-  #scale_y_continuous(trans='log10', limits=c(1, 10^(floor(log10(knee)) + 2)), breaks=c(10^(1:(floor(log10(knee)) + 2))), labels = scales::number)+
-  scale_x_continuous(limits=c(1, 120000), breaks=c(1,10,100,1000,10000, 100000), trans='log10', labels = scales::number)+
-  scale_y_continuous(limits=c(1, 12000), breaks=c(1, 5, 10, 50, 100, 500, 1000, 5000, 10000), trans='log10', labels = scales::number)+
-  labs(title=ggp_title,
-       x="\nCell barcodes sorted by number of counts [descending]",
-       y="Total UMI count for each barcode\n") +
-  ggp_theme_bw_square_01
-
-ggsave("./files/barcoderanks.png", plt_barcoderanks, height=15, width=15, units="cm")
+ # This is a filtered matrix processed by `STARsolo` using `emptyDrops()`.
 
 # emptyDrops()
-set.seed(100)
-e.out <- emptyDrops(dge, niters=50000)
-is.cell <- e.out$FDR <= 0.01
-num_is_cell <- sum(is.cell, na.rm=TRUE)
-tbl_emptydrops <- table(Limited=e.out$Limited, Significant=is.cell)
-
-write.table(tbl_emptydrops, "./files/tbl_emptydrops.tsv", quote=F, sep="\t", row.names=T, col.names=NA)
+ # This is a filtered matrix processed by `STARsolo` using `emptyDrops()`.
 
 # a function for statistics
 scRNAstat <- function(SEURATOBJ) {
@@ -89,7 +55,7 @@ scRNAstat <- function(SEURATOBJ) {
 
 # pre emptyDrops dge
 so_pre_emptydrops <-
-  CreateSeuratObject(counts=dge) %>%
+  CreateSeuratObject(counts=dge_raw) %>%
   PercentageFeatureSet(pattern = "^agat|^rrn", col.name = "percent.mt")
 stat_pre_emptydrops <- scRNAstat(so_pre_emptydrops)
 plt_vln_pre_emptydrops <- VlnPlot(so_pre_emptydrops, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
@@ -97,7 +63,6 @@ plt_vln_pre_emptydrops <- VlnPlot(so_pre_emptydrops, features = c("nFeature_RNA"
 ggsave("./files/plt_vln_pre_emptydrops.png", plt_vln_pre_emptydrops, height=12, width=18, units="cm")
 
 # post emptyDrops dge
-dge <- dge[,which(e.out$FDR<=0.01)]
 so_post_emptydrops <-
   CreateSeuratObject(counts=dge) %>%
   PercentageFeatureSet(pattern = "^agat|^rrn", col.name = "percent.mt")
@@ -168,7 +133,11 @@ colnames(summary_stat) <- c("gene", "cell", "mean_umi", "median_umi", "mean_gene
 
 write.table(summary_stat, "./files/summary_stat.tsv", quote=F, sep="\t", row.names = F)
 
-#
+# STARsolo summary
+summary_star <- read.table("/media/nguyen/Data1/mao/scseq/select_polyt/starsolo_original/Solo.out/Gene/Summary.csv", sep="\t")
+write.table(summary_star, "./files/summary_star.tsv", quote=F, sep="\t", row.names=F, col.names=c("Measurement", "Value"))
+
+# UMAP
 so_pc27 <-
   CreateSeuratObject(counts=dge, min.cells = 3, min.features = 200) %>%
   PercentageFeatureSet(pattern = "^agat|^rrn", col.name = "percent.mt") %>% subset(., nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5) %>%

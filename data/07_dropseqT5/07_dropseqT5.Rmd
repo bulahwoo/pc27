@@ -1,5 +1,5 @@
 ---
-title: "pc27 analysis using Drop-seq core computational protocol"
+title: "pc27 analysis using Drop-seq core computational protocol (T5)"
 author: | 
     | Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen
     | `r format(Sys.time(), '%B %d, %Y')`
@@ -8,7 +8,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(knitr)
-setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/04_dropseq/")
+setwd("/media/nguyen/Data1/github/bulahwoo/pc27/data/07_dropseqT5/")
 ```
 
 ### FastQC
@@ -19,7 +19,7 @@ Output can be found [here (read 1)](../shared/fastqc/pc27_read1/fastqc.md) and [
 
 ### barcodeRanks()
 
-The raw matrix is extracted by selecting cells that have ≥ 20 UMI (suggested by [James Nemesh](https://brain.broadinstitute.org/team/james_nemesh/)).
+The raw matrix is extracted by selecting cells that have ≥ 5 UMI.
 
 ```{r barkcoderanks, echo=FALSE, fig.cap="barcodeRanks() output", out.width = '60%', fig.align = 'center'}
 knitr::include_graphics("./files/barcoderanks.png")

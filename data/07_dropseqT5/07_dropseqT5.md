@@ -1,4 +1,4 @@
-pc27 analysis using Drop-seq core computational protocol
+pc27 analysis using Drop-seq core computational protocol (T5)
 ================
 Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
 October 15, 2024
@@ -13,9 +13,7 @@ Output can be found [here (read
 
 ### barcodeRanks()
 
-The raw matrix is extracted by selecting cells that have ≥ 20 UMI
-(suggested by [James
-Nemesh](https://brain.broadinstitute.org/team/james_nemesh/)).
+The raw matrix is extracted by selecting cells that have ≥ 5 UMI.
 
 <div class="figure" style="text-align: center">
 
@@ -32,10 +30,10 @@ barcodeRanks() output
 
 |       | FALSE | TRUE |
 |:------|------:|-----:|
-| FALSE | 34135 |  639 |
-| TRUE  |     0 |  948 |
+| FALSE | 34290 |  600 |
+| TRUE  |     0 |  832 |
 
-1587 cells are identified.
+1432 cells are identified.
 
  
 
@@ -53,7 +51,7 @@ barcodeRanks() output
 
 |     | Gene |  Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:----|-----:|------:|--------------:|----------------:|---------------:|-----------------:|
-| Raw | 9080 | 61421 |      180.1883 |             121 |        134.226 |              102 |
+| Raw | 9098 | 91980 |      123.0419 |              65 |       92.28746 |               59 |
 
  
 
@@ -69,7 +67,7 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| emptyDrops | 9080 | 1587 | 1004.074 | 597 | 544.8828 | 427 |
+| emptyDrops | 9098 | 1432 | 1071.435 | 669.5 | 574.2381 | 466.5 |
 
  
 
@@ -85,7 +83,7 @@ barcodeRanks() output
 
 |       | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:------|-----:|-----:|--------------:|----------------:|---------------:|-----------------:|
-| Step1 | 7154 | 1587 |       1003.21 |             594 |       544.0347 |              427 |
+| Step1 | 7118 | 1432 |      1070.455 |           668.5 |       573.2786 |              466 |
 
  
 
@@ -101,7 +99,7 @@ barcodeRanks() output
 
 |       | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:------|-----:|-----:|--------------:|----------------:|---------------:|-----------------:|
-| Step2 | 7077 | 1274 |      1207.962 |             841 |       642.0581 |              550 |
+| Step2 | 7055 | 1190 |      1253.254 |           894.5 |       660.1454 |              573 |
 
  
 
@@ -118,7 +116,7 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| Step3.1 | 7077 | 1270 | 1210.985 | 843 | 643.4504 | 551 |
+| Step3.1 | 7055 | 1187 | 1255.782 | 900 | 661.3083 | 574 |
 
  
 
@@ -135,7 +133,7 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| Step3.2 | 7077 | 1129 | 1273.238 | 924 | 668.8937 | 593 |
+| Step3.2 | 7055 | 1059 | 1320.153 | 974 | 687.6374 | 619 |
 
  
 
@@ -153,7 +151,7 @@ barcodeRanks() output
 
 |       | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:------|-----:|-----:|--------------:|----------------:|---------------:|-----------------:|
-| Step3 | 7077 | 1125 |      1276.883 |             928 |       670.5609 |              594 |
+| Step3 | 7055 | 1056 |      1323.185 |             976 |       689.0227 |            620.5 |
 
  
 
@@ -161,13 +159,13 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| Raw | 9080 | 61421 | 180.1883 | 121 | 134.2260 | 102 |
-| emptyDrops | 9080 | 1587 | 1004.0737 | 597 | 544.8828 | 427 |
-| Step1 | 7154 | 1587 | 1003.2098 | 594 | 544.0347 | 427 |
-| Step2 | 7077 | 1274 | 1207.9623 | 841 | 642.0581 | 550 |
-| Step3.1 | 7077 | 1270 | 1210.9850 | 843 | 643.4504 | 551 |
-| Step3.2 | 7077 | 1129 | 1273.2383 | 924 | 668.8937 | 593 |
-| Step3 | 7077 | 1125 | 1276.8827 | 928 | 670.5609 | 594 |
+| Raw | 9098 | 91980 | 123.0419 | 65.0 | 92.28746 | 59.0 |
+| emptyDrops | 9098 | 1432 | 1071.4351 | 669.5 | 574.23813 | 466.5 |
+| Step1 | 7118 | 1432 | 1070.4546 | 668.5 | 573.27863 | 466.0 |
+| Step2 | 7055 | 1190 | 1253.2538 | 894.5 | 660.14538 | 573.0 |
+| Step3.1 | 7055 | 1187 | 1255.7818 | 900.0 | 661.30834 | 574.0 |
+| Step3.2 | 7055 | 1059 | 1320.1530 | 974.0 | 687.63739 | 619.0 |
+| Step3 | 7055 | 1056 | 1323.1847 | 976.0 | 689.02273 | 620.5 |
 
  
 

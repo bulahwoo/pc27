@@ -1,4 +1,4 @@
-pc27 analysis using Drop-seq core computational protocol
+pc27 analysis using STARsolo filtered matrix
 ================
 Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
 October 15, 2024
@@ -13,35 +13,20 @@ Output can be found [here (read
 
 ### barcodeRanks()
 
-The raw matrix is extracted by selecting cells that have ≥ 20 UMI
-(suggested by [James
-Nemesh](https://brain.broadinstitute.org/team/james_nemesh/)).
-
-<div class="figure" style="text-align: center">
-
-<img src="./files/barcoderanks.png" alt="barcodeRanks() output" width="60%" />
-<p class="caption">
-barcodeRanks() output
-</p>
-
-</div>
+This is a filtered matrix processed by `STARsolo` using `emptyDrops()`.
 
  
 
 ### emptyDrops()
 
-|       | FALSE | TRUE |
-|:------|------:|-----:|
-| FALSE | 34135 |  639 |
-| TRUE  |     0 |  948 |
-
-1587 cells are identified.
+This is a filtered matrix processed by `STARsolo` using `emptyDrops()`.
 
  
 
 ### vlnplot()
 
-- The raw matrix
+- The raw matrix: this is exactly the raw matrix shown in “pc27 analysis
+  using STARsolo raw matrix”.
   <div class="figure" style="text-align: center">
 
   <img src="./files/plt_vln_pre_emptydrops.png" alt="pre-emptydrops" width="60%" />
@@ -51,9 +36,9 @@ barcodeRanks() output
 
   </div>
 
-|     | Gene |  Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
-|:----|-----:|------:|--------------:|----------------:|---------------:|-----------------:|
-| Raw | 9080 | 61421 |      180.1883 |             121 |        134.226 |              102 |
+|  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
+|:---|---:|---:|---:|---:|---:|---:|
+| Raw | 11320 | 1277682 | 10.53559 | 1 | 7.912049 | 1 |
 
  
 
@@ -69,7 +54,7 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| emptyDrops | 9080 | 1587 | 1004.074 | 597 | 544.8828 | 427 |
+| emptyDrops | 11320 | 9341 | 551.5654 | 395 | 340.8436 | 272 |
 
  
 
@@ -85,7 +70,7 @@ barcodeRanks() output
 
 |       | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:------|-----:|-----:|--------------:|----------------:|---------------:|-----------------:|
-| Step1 | 7154 | 1587 |       1003.21 |             594 |       544.0347 |              427 |
+| Step1 | 7760 | 9341 |      551.4311 |             395 |       340.7104 |              272 |
 
  
 
@@ -101,7 +86,7 @@ barcodeRanks() output
 
 |       | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:------|-----:|-----:|--------------:|----------------:|---------------:|-----------------:|
-| Step2 | 7077 | 1274 |      1207.962 |             841 |       642.0581 |              550 |
+| Step2 | 7755 | 9182 |      555.6982 |             398 |       343.2944 |              273 |
 
  
 
@@ -118,7 +103,7 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| Step3.1 | 7077 | 1270 | 1210.985 | 843 | 643.4504 | 551 |
+| Step3.1 | 7755 | 9156 | 556.4211 | 399 | 343.7013 | 274 |
 
  
 
@@ -135,7 +120,7 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| Step3.2 | 7077 | 1129 | 1273.238 | 924 | 668.8937 | 593 |
+| Step3.2 | 7755 | 1333 | 1116.962 | 797 | 602.8477 | 507 |
 
  
 
@@ -153,7 +138,7 @@ barcodeRanks() output
 
 |       | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:------|-----:|-----:|--------------:|----------------:|---------------:|-----------------:|
-| Step3 | 7077 | 1125 |      1276.883 |             928 |       670.5609 |              594 |
+| Step3 | 7755 | 1333 |      1116.962 |             797 |       602.8477 |              507 |
 
  
 
@@ -161,13 +146,42 @@ barcodeRanks() output
 
 |  | Gene | Cell | Mean UMI/Cell | Median UMI/Cell | Mean Gene/Cell | Median Gene/Cell |
 |:---|---:|---:|---:|---:|---:|---:|
-| Raw | 9080 | 61421 | 180.1883 | 121 | 134.2260 | 102 |
-| emptyDrops | 9080 | 1587 | 1004.0737 | 597 | 544.8828 | 427 |
-| Step1 | 7154 | 1587 | 1003.2098 | 594 | 544.0347 | 427 |
-| Step2 | 7077 | 1274 | 1207.9623 | 841 | 642.0581 | 550 |
-| Step3.1 | 7077 | 1270 | 1210.9850 | 843 | 643.4504 | 551 |
-| Step3.2 | 7077 | 1129 | 1273.2383 | 924 | 668.8937 | 593 |
-| Step3 | 7077 | 1125 | 1276.8827 | 928 | 670.5609 | 594 |
+| Raw | 11320 | 1277682 | 10.53559 | 1 | 7.912049 | 1 |
+| emptyDrops | 11320 | 9341 | 551.56536 | 395 | 340.843593 | 272 |
+| Step1 | 7760 | 9341 | 551.43111 | 395 | 340.710416 | 272 |
+| Step2 | 7755 | 9182 | 555.69821 | 398 | 343.294380 | 273 |
+| Step3.1 | 7755 | 9156 | 556.42114 | 399 | 343.701289 | 274 |
+| Step3.2 | 7755 | 1333 | 1116.96249 | 797 | 602.847712 | 507 |
+| Step3 | 7755 | 1333 | 1116.96249 | 797 | 602.847712 | 507 |
+
+ 
+
+- STARsolo summary
+
+This summary is generated by `STARsolo`.
+
+| Measurement                                 | Value     |
+|:--------------------------------------------|:----------|
+| Number of Reads                             | 438346872 |
+| Reads With Valid Barcodes                   | 1         |
+| Sequencing Saturation                       | 0.384967  |
+| Q30 Bases in CB+UMI                         | -nan      |
+| Q30 Bases in RNA read                       | 0.871028  |
+| Reads Mapped to Genome (Unique+Multiple)    | 0.665917  |
+| Reads Mapped to Genome (Unique)             | 0.61345   |
+| Reads Mapped to Gene (Unique+Multiple Gene) | NoMulti   |
+| Reads Mapped to Gene (Unique Gene)          | 0.0499304 |
+| Estimated Number of Cells                   | 9341      |
+| Unique Reads in Cells Mapped to Gene        | 8712527   |
+| Fraction of Unique Reads in Cells           | 0.398071  |
+| Mean Reads per Cell                         | 932       |
+| Median Reads per Cell                       | 649       |
+| UMIs in Cells                               | 5152172   |
+| Mean UMI per Cell                           | 551       |
+| Median UMI per Cell                         | 395       |
+| Mean Gene per Cell                          | 340       |
+| Median Gene per Cell                        | 272       |
+| Total Gene Detected                         | 8691      |
 
  
 
