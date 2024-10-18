@@ -101,7 +101,7 @@ each cell (left), the total number of unique genes in each cell
 (middle), and the percentage of reads mapped to the mitochondrial genome
 (right).
 
-![](02_starsolo_files/figure-gfm/violin1-1.png)<!-- -->
+![](files/figure-gfm/violin1-1.png)<!-- -->
 
 We further filtered cells (1) with feature counts larger than 2500 or
 less than 200 or (2) with mitochondrial counts larger than 5%.
@@ -114,7 +114,7 @@ so_pc27 <- CreateSeuratObject(counts = mtx_pc27, min.cells = 3, min.features = 2
 
 We checked the diagnostic plots after filtering.
 
-![](02_starsolo_files/figure-gfm/violin2-1.png)<!-- -->
+![](files/figure-gfm/violin2-1.png)<!-- -->
 
 UMAP clustering of data from 1333 cells revealed 5 cell clusters.
 
@@ -166,7 +166,7 @@ ggplot(df_umap) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-![](02_starsolo_files/figure-gfm/umap-1.png)<!-- -->
+![](files/figure-gfm/umap-1.png)<!-- -->
 
 Genes differentially expressed among each cluster were selected as
 marker genes.
@@ -198,7 +198,7 @@ log2 fold-change value (avg_log2FC). We can visualize the marker gene
 expression (from left to right: top1, top2, top3; from top to bottom:
 cluster 0, 1, 2, 3 and 4).
 
-![](02_starsolo_files/figure-gfm/marker02-1.png)<!-- -->
+![](files/figure-gfm/marker02-1.png)<!-- -->
 
 We noticed the high adjusted *P*-value (p_val_adj) for marker genes in
 all clusters, so we filtered genes with p_val_adj \>= 0.05
@@ -226,7 +226,7 @@ We can visualize the marker gene expression with filtered data. Note
 that cluster 1 only has one marker gene that meets this filtering
 criterion.
 
-![](02_starsolo_files/figure-gfm/marker04-1.png)<!-- -->
+![](files/figure-gfm/marker04-1.png)<!-- -->
 
 The below table shows top10 marker genes in each cluster with inferred
 gene names derived from annotated reference genomes *Bombyx mori*,

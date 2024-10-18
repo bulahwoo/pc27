@@ -176,7 +176,7 @@ ggplot(df_pc27, aes(xvalue, yvalue)) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-![](01_dropseq_files/figure-gfm/knee-plot-1.png)<!-- -->
+![](files/figure-gfm/knee-plot-1.png)<!-- -->
 
 The plot indicates the top 8000 cells contribute nearly 30% of the total
 uniquely mapped reads.
@@ -223,7 +223,7 @@ ggplot()+
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-![](01_dropseq_files/figure-gfm/barcodeRanks-1.png)<!-- -->
+![](files/figure-gfm/barcodeRanks-1.png)<!-- -->
 
 Cells below the knee point (5916.5) are considered empty droplets.
 
@@ -275,7 +275,7 @@ ggplot(e.out %>% as.data.frame() %>% filter(!is.na(LogProb)) %>% mutate(FDR_fill
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-![](01_dropseq_files/figure-gfm/emptyDrops3-1.png)<!-- -->
+![](files/figure-gfm/emptyDrops3-1.png)<!-- -->
 
 The retained droplets (orange color) should have large UMI counts and/or
 large negative log probabilities.
@@ -297,7 +297,7 @@ each cell (left), the total number of unique genes in each cell
 (middle), and the percentage of reads mapped to the mitochondrial genome
 (right).
 
-![](01_dropseq_files/figure-gfm/violin1-1.png)<!-- -->
+![](files/figure-gfm/violin1-1.png)<!-- -->
 
 We further filtered cells (1) with feature counts larger than 2500 or
 less than 200 or (2) with mitochondrial counts larger than 5%.
@@ -310,7 +310,7 @@ so_pc27 <- CreateSeuratObject(counts = mtx_pc27, min.cells = 3, min.features = 2
 
 We checked the diagnostic plots after filtering.
 
-![](01_dropseq_files/figure-gfm/violin2-1.png)<!-- -->
+![](files/figure-gfm/violin2-1.png)<!-- -->
 
 UMAP clustering of data from 5903 cells revealed 12 cell clusters.
 
@@ -362,7 +362,7 @@ ggplot(df_umap) +
         panel.border = element_rect(linewidth = 1, color="black"), aspect.ratio = 1)
 ```
 
-![](01_dropseq_files/figure-gfm/umap-1.png)<!-- -->
+![](files/figure-gfm/umap-1.png)<!-- -->
 
 Genes differentially expressed among each cluster were selected as
 marker genes.
@@ -415,7 +415,7 @@ log2 fold-change value (avg_log2FC). We can visualize the marker gene
 expression (from left to right: top1, top2, top3; from top to bottom:
 cluster 0, 1, 2, 3, …, 10 and 11).
 
-![](01_dropseq_files/figure-gfm/marker02-1.png)<!-- -->
+![](files/figure-gfm/marker02-1.png)<!-- -->
 
 We noticed the high adjusted *P*-value (p_val_adj) for marker genes in
 cluster 0, 1 and 2, so we filtered genes with p_val_adj \>= 0.05
@@ -464,7 +464,7 @@ so_pc27.markers %>% filter(p_val_adj < 0.05) %>% arrange(desc(avg_log2FC)) %>% g
 
 We can visualize the marker gene expression with filtered data.
 
-![](01_dropseq_files/figure-gfm/marker04-1.png)<!-- -->
+![](files/figure-gfm/marker04-1.png)<!-- -->
 
 The below table shows top10 marker genes in each cluster with inferred
 gene names derived from annotated reference genomes *Bombyx mori*,
