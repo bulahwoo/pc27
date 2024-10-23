@@ -1,7 +1,7 @@
 pc27 analysis using STARsolo filtered matrix
 ================
 Andrea Elizabeth Acurio Armas, Bulah Wu, Petr Nguyen  
-October 15, 2024
+October 23, 2024
 
 ### FastQC
 
@@ -25,8 +25,8 @@ This is a filtered matrix processed by `STARsolo` using `emptyDrops()`.
 
 ### vlnplot()
 
-- The raw matrix: this is exactly the raw matrix shown in “pc27 analysis
-  using STARsolo raw matrix”.
+- The raw matrix: this is exactly the raw matrix shown in [pc27 analysis
+  using STARsolo raw matrix](../05_starsoloRaw/05_starsoloRaw.md).
   <div class="figure" style="text-align: center">
 
   <img src="./files/plt_vln_pre_emptydrops.png" alt="pre-emptydrops" width="60%" />

@@ -37,7 +37,7 @@ colnames(summary_stat) <- c("Gene", "Cell", "Mean UMI/Cell", "Median UMI/Cell", 
 rownames(summary_stat) <- c("Raw", "emptyDrops", "Step1", "Step2", "Step3.1", "Step3.2", "Step3")
 ```
 
-- The raw matrix: this is exactly the raw matrix shown in "pc27 analysis using STARsolo raw matrix".
+- The raw matrix: this is exactly the raw matrix shown in [pc27 analysis using STARsolo raw matrix](../05_starsoloRaw/05_starsoloRaw.md).
 ```{r vlnplot01, echo=FALSE, fig.cap="pre-emptydrops", out.width = '60%', fig.align = 'center'}
 knitr::include_graphics("./files/plt_vln_pre_emptydrops.png")
 kable(summary_stat[1,])
